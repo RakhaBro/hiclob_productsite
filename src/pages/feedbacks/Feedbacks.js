@@ -2,14 +2,39 @@ import Footer from '../../components/footer/Footer';
 import Nav from '../../components/nav/nav';
 import FeedbackItem from '../../components/feedbackItem/FeedbackItem.js';
 import './feedbacks.css';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackForm from '../../forms/feedbackForm/FeedbackForm.js';
 import { useNavigate } from 'react-router-dom';
+import { db } from "../../firebase.js";
+import { AuthStateContext } from '../../providers/auth_provider.js';
+import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
 
 function FeedbacksPage() {
 
+    const { userId } = useContext(AuthStateContext);
+    const [ availableFeedback, setAvailableFeedback ] = useState(null);
+    const [ isLoaded, setIsLoaded ] = useState(false);
     const navigate = useNavigate();
+
+    const check_feedbackAvailability = async () => {
+        if (userId !== null) {
+            const availableFeedback_queried = await getDocs(query(
+                collection(db, 'feedbacks'),
+                where('uid', '==', userId)
+            ));
+            const availableFeedback_doc = availableFeedback_queried.docs[0];
+            if (availableFeedback_queried.docs.length > 0) {
+                var availableFeedback_data = availableFeedback_doc.data();
+                setAvailableFeedback(availableFeedback_data);
+            }
+        }
+        setIsLoaded(true);
+    }
+
+    useEffect(() => {
+        check_feedbackAvailability();
+    }, []);
 
     const download = () => {
         closePopup();
@@ -71,78 +96,77 @@ function FeedbacksPage() {
                         </div>
                         <div></div>
                     </div>
-                    <div id='startFeedback'>
-                        <h2>Start your feedback!</h2>
-                        <p className='gradient_text_2'>Help our team to improve Hiclob by giving us your feedback!</p>
-                        <button onClick={() => showPopup(<FeedbackForm downloadFunc={download} />)}>
-                            <img src={process.env.PUBLIC_URL + 'assets/svg/add.svg'} alt='' />
-                            <p>Give feedback</p>
-                        </button>
-                    </div>
-                    {/* <FeedbackItem
-                        userPhoto={"https://media.licdn.com/dms/image/v2/D5603AQEB46WT0XfM2Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722751862435?e=2147483647&v=beta&t=8xYIHAe6eyZ9yhL_yLAwKb4RsK5pJwuXh-ZOJJqlsrg"}
-                        displayName={"Muhammad Rakha Fadhilah"}
-                        userName={"rakha__fadhilah"}
-                        stars={3}
-                        content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
-                        likes={127}
-                    /> */}
+                    {
+                    isLoaded !== true
+                    ? <div id='feedbackLoading_container'></div>
+                    : availableFeedback !== null
+                        ? <FeedbackItem
+                            uid={userId}
+                            stars={availableFeedback['star']}
+                            content={availableFeedback['feedback']}
+                            likes={availableFeedback['likes_num'] ?? 0}
+                            // lastSubmitted={availableFeedback['time_submitted']}
+                            isMine={true}
+                        />
+                        : <div id='startFeedback'>
+                            <h2>Start your feedback!</h2>
+                            <p className='gradient_text_2'>Help our team to improve Hiclob by giving us your feedback!</p>
+                            <button onClick={() => showPopup(<FeedbackForm downloadFunc={download} />)}>
+                                <img src={process.env.PUBLIC_URL + 'assets/svg/add.svg'} alt='' />
+                                <p>Give feedback</p>
+                            </button>
+                        </div>
+                    }
                 </div>
 
                 <div id="content">
 
                     <FeedbackItem
-                        userPhoto={"https://media.licdn.com/dms/image/v2/D5603AQEB46WT0XfM2Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722751862435?e=2147483647&v=beta&t=8xYIHAe6eyZ9yhL_yLAwKb4RsK5pJwuXh-ZOJJqlsrg"}
-                        displayName={"Muhammad Rakha Fadhilah"}
-                        userName={"rakha__fadhilah"}
+                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
                         stars={3}
                         content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
                         likes={127}
+                        // lastSubmitted={availableFeedback['time_submitted']}
                     />
 
                     <FeedbackItem
-                        userPhoto={"https://firebasestorage.googleapis.com/v0/b/heyclob-test.appspot.com/o/profile_pictures%2F74HWXUm6UbUrcUQMQdZVNt5TTrn1.jpg.jpg?alt=media&token=8960279b-6dd4-4f71-9a02-fc1d7619f86d"}
-                        displayName={"Hanif Sholatan"}
-                        userName={"hanifsltn"}
+                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
                         stars={4}
                         content={"This app is just badasss 🔥🔥. But, Imma give a feedback for improvements. Add country option feature to find new mates!"}
                         likes={80}
+                        // lastSubmitted={availableFeedback['time_submitted']}
                     />
 
                     <FeedbackItem
-                        userPhoto={"https://firebasestorage.googleapis.com/v0/b/heyclob-test.appspot.com/o/profile_pictures%2Fhf6dDeUtHCXTw4vhPjGiAC5ob8n1.jpg?alt=media&token=b471326b-79a1-4133-8672-ba82a5fc5ce2"}
-                        displayName={"Mello"}
-                        userName={"mello48"}
+                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
                         stars={5}
                         content={"Hey, I have an idea to make this app profitable! Limit some feature for free users and push them to get premium! What do you all think about this idea? Please like my feedback if you agree."}
                         likes={2180}
+                        // lastSubmitted={availableFeedback['time_submitted']}
                     />
 
                     <FeedbackItem
-                        userPhoto={"https://firebasestorage.googleapis.com/v0/b/heyclob-test.appspot.com/o/profile_pictures%2F74HWXUm6UbUrcUQMQdZVNt5TTrn1.jpg.jpg?alt=media&token=8960279b-6dd4-4f71-9a02-fc1d7619f86d"}
-                        displayName={"Hanif Sholatan"}
-                        userName={"hanifsltn"}
+                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
                         stars={4}
                         content={"This app is just badasss 🔥🔥. But, Imma give a feedback for improvements. Add country option feature to find new mates!"}
                         likes={80}
+                        // lastSubmitted={availableFeedback['time_submitted']}
                     />
 
                     <FeedbackItem
-                        userPhoto={"https://firebasestorage.googleapis.com/v0/b/heyclob-test.appspot.com/o/profile_pictures%2Fhf6dDeUtHCXTw4vhPjGiAC5ob8n1.jpg?alt=media&token=b471326b-79a1-4133-8672-ba82a5fc5ce2"}
-                        displayName={"Mello"}
-                        userName={"mello48"}
+                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
                         stars={5}
                         content={"Hey, I have an idea to make this app profitable! Limit some feature for free users and push them to get premium! What do you all think about this idea? Please like my feedback if you agree."}
                         likes={2180}
+                        // lastSubmitted={availableFeedback['time_submitted']}
                     />
 
                     <FeedbackItem
-                        userPhoto={"https://media.licdn.com/dms/image/v2/D5603AQEB46WT0XfM2Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722751862435?e=2147483647&v=beta&t=8xYIHAe6eyZ9yhL_yLAwKb4RsK5pJwuXh-ZOJJqlsrg"}
-                        displayName={"Muhammad Rakha Fadhilah"}
-                        userName={"rakha__fadhilah"}
+                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
                         stars={3}
                         content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
                         likes={127}
+                        // lastSubmitted={availableFeedback['time_submitted']}
                     />
 
                 </div>

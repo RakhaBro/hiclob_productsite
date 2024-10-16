@@ -74,7 +74,8 @@
 }
 
 #feedbackDetail .content .upper img {
-    width: 90px;
+    width: 90px; aspect-ratio: 1;
+    object-fit: cover;
     border-radius: 100%;
 }
 

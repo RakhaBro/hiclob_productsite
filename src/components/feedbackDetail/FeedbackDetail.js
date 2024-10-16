@@ -1,8 +1,41 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase.js';
+import { format } from 'date-fns';
 import './feedbackDetail.css';
 
-function FeedbackDetail() {
+function FeedbackDetail({ uid, stars, content, likes, lastSubmitted, isMine }) {
+
+    const [ feedbackSender, setFeedbackSender ] = useState(null);
+    const [isLoaded, setIsloaded] = useState(false);
+    const [ formattedLastSubmitted, setFormattedLastSubmitted ] = useState(null);
+
+    const setup_feedbackData = async () => {
+        try {
+            console.log("tes");
+            const userRef = doc(db, "users", uid);
+            const user_snapshot = await getDoc(userRef);
+            if (user_snapshot.exists) {
+                const user_data = user_snapshot.data();
+                setFeedbackSender(user_data);
+                console.log("Feedback sender = " + JSON.stringify(feedbackSender));
+            }
+            if (lastSubmitted !== undefined) {
+                const lastSubmitted_date = lastSubmitted.toDate();
+                const formattedDate = format(lastSubmitted_date, "MMMM do yyyy");
+                setFormattedLastSubmitted(formattedDate);
+            }
+            setIsloaded(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        setup_feedbackData();
+    }, []);
+
 
     const { setPopupState } = useContext(PopupStateContext);
     const closePopup = () => {
@@ -11,7 +44,7 @@ function FeedbackDetail() {
 
     let stars_element = [];
     for (let i = 1; i <= 5; i++) {
-        if (i <= 3) {
+        if (i <= stars) {
             stars_element.push(
                 <img src={process.env.PUBLIC_URL + "assets/svg/star_active.svg"} alt='' />
             );
@@ -22,7 +55,7 @@ function FeedbackDetail() {
         }
     }
 
-    const [ isLiked, setIsLiked ] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
 
     function setLike() {
         if (isLiked === true) {
@@ -40,47 +73,68 @@ function FeedbackDetail() {
                     <img src={process.env.PUBLIC_URL + 'assets/svg/close.svg'} alt='' />
                 </div>
             </div>
-            <div className='content'>
-                
-                <div className='upper'>
-                    <img
-                        className='box_shadow_dark'
-                        src="https://media.licdn.com/dms/image/v2/D5603AQEB46WT0XfM2Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722751862435?e=2147483647&v=beta&t=8xYIHAe6eyZ9yhL_yLAwKb4RsK5pJwuXh-ZOJJqlsrg"
-                        alt=''
-                    />
-                    <div>
-                        <div>
-                            <p className='username'>@rakha__fadhilah</p>
-                            <p className='gradient_text_2 displayname'>Muhammad Rakha Fadhilah</p>
+            {
+                isLoaded !== true
+                    ? <div className='content'>
+                        <div className='upper'></div>
+                        <div className='middle'>
+                            <p>Loading...</p>
                         </div>
-                        <p className='date_joined lowcolor_text_1'>Joined Hiclob since September 20th 2024</p>
+                        <div className='under'></div>
                     </div>
-                </div>
+                    : <div className='content'>
 
-                <div className='middle'>
-                    <div className='stars_container'>
-                        {stars_element}
-                        <p className='gradient_text_2'>3/5</p>
-                    </div>
-                    <div className='like_container gradient_text_2' onClick={setLike}>
-                        137
-                        <img
-                            src={
-                                process.env.PUBLIC_URL +
-                                (isLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
+                        <div className='upper'>
+                            {
+                                feedbackSender['photo_url'] !== null
+                                ? <img
+                                    className='box_shadow_dark'
+                                    src={feedbackSender['photo_url']}
+                                    alt=''
+                                />
+                                : <img
+                                    className='box_shadow_dark'
+                                    src={process.env.PUBLIC_URL + "assets/svg/person.svg"}
+                                    alt=''
+                                />
                             }
-                            alt=''
-                        />
-                    </div>
-                </div>
+                            <div>
+                                <div>
+                                    <p className='username'>@{feedbackSender['username']}</p>
+                                    <p className='gradient_text_2 displayname'>{feedbackSender['display_name']}</p>
+                                </div>
+                                <p className='date_joined lowcolor_text_1'>
+                                    {
+                                        formattedLastSubmitted !== null
+                                            ? "Last submitted" + {formattedLastSubmitted}
+                                            : null
+                                    }
+                                </p>
+                            </div>
+                        </div>
 
-                <div className='under'>
-                    <p>
-                        Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests.
-                        Second, I can create a public talk and many people that I never met before can watch me.
-                    </p>
-                </div>
-            </div>
+                        <div className='middle'>
+                            <div className='stars_container'>
+                                {stars_element}
+                                <p className='gradient_text_2'>{stars}/5</p>
+                            </div>
+                            <div className='like_container gradient_text_2' onClick={setLike}>
+                                {likes}
+                                <img
+                                    src={
+                                        process.env.PUBLIC_URL +
+                                        (isLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
+                                    }
+                                    alt=''
+                                />
+                            </div>
+                        </div>
+
+                        <div className='under'>
+                            <p>{content}</p>
+                        </div>
+                    </div>
+            }
         </div>
     );
 }

@@ -106,6 +106,10 @@
     align-items: center; justify-content: start;
 }
 
+#feedbacks #feedbackLoading_container {
+    width: calc((100% / 3) - (36px / 2));
+}
+
 
 
 
