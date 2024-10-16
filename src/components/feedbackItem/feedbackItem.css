@@ -18,10 +18,11 @@
     padding: calc(36px / 2); box-sizing: border-box;
     border-radius: calc(20px - 2px);
     background: var(--background1);
-    transition: .2s;
+    color: white;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: calc(36px / 2);
+    transition: .2s;
 }
 
 .feedback_item_wrapper:hover {

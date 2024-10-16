@@ -9,7 +9,7 @@ import { auth, db } from '../../firebase.js';
 function LoginForm({downloadFunc}) {
 
     const { setPopupState } = useContext(PopupStateContext);
-    const { setUser } = useContext(AuthStateContext);
+    const { userId, userData, setUser } = useContext(AuthStateContext);
     
     const closePopup = () => {
         setPopupState(false, <div></div>);
@@ -41,7 +41,7 @@ function LoginForm({downloadFunc}) {
                             const userRef = doc(db, "users", userCredential.user.uid);
                             const user_snapshot = await getDoc(userRef);
                             const user_data = user_snapshot.data();
-                            setUser(user_data);
+                            setUser(userRef.id, user_data);
                             console.log("Logged in as @" + user_data['username'] + "(" + user_data['display_name'] + ")");
                             setIsLoginValid(true);
                         } catch (error) {
@@ -57,11 +57,12 @@ function LoginForm({downloadFunc}) {
                         );
                         const user_snapshot = await getDocs(username_query);
                         if (user_snapshot.docs.length > 0) {
+                            var user_doc = user_snapshot.docs[0];
                             var user_data = user_snapshot.docs[0].data();
                             var email_found = user_data['email'];
                             const userCredential = await signInWithEmailAndPassword(auth, email_found, password);
                             if (userCredential.user.uid !== null) {
-                                setUser(user_data);
+                                setUser(user_doc.id, user_data);
                                 console.log("Logged in as " + userCredential.user.displayName);
                                 setIsLoginValid(true);
                             } else {

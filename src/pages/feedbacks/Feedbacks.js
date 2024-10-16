@@ -79,6 +79,14 @@ function FeedbacksPage() {
                             <p>Give feedback</p>
                         </button>
                     </div>
+                    {/* <FeedbackItem
+                        userPhoto={"https://media.licdn.com/dms/image/v2/D5603AQEB46WT0XfM2Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1722751862435?e=2147483647&v=beta&t=8xYIHAe6eyZ9yhL_yLAwKb4RsK5pJwuXh-ZOJJqlsrg"}
+                        displayName={"Muhammad Rakha Fadhilah"}
+                        userName={"rakha__fadhilah"}
+                        stars={3}
+                        content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
+                        likes={127}
+                    /> */}
                 </div>
 
                 <div id="content">

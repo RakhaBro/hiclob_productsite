@@ -7,7 +7,7 @@ import Profile from '../profile/Profile';
 
 function Nav() {
 
-    const { user } = useContext(AuthStateContext);
+    const { userData } = useContext(AuthStateContext);
     const { setPopupState } = useContext(PopupStateContext);
 
     function showProfile() {
@@ -66,11 +66,11 @@ function Nav() {
                     <button onClick={to_home}><p className="gradient_text_2">Home</p></button>
                     <button onClick={to_releases}><p className="gradient_text_2">Releases</p></button>
                     <button onClick={to_feedbacks}><p className="gradient_text_2">Feedbacks</p></button>
-                    {user !== null
+                    {userData !== null
                         ? <div className='profilephoto_container'>
-                            {user['photo_url'] !== null
+                            {userData['photo_url'] !== null
                                 ? <img
-                                    src={user['photo_url']} alt=''
+                                    src={userData['photo_url']} alt=''
                                     onClick={showProfile}
                                     className='photo_url'
                                 />

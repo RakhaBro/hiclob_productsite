@@ -5,7 +5,7 @@ import './feedbackItem.css';
 
 
 
-function FeedbackItem({ userPhoto, displayName, userName, stars, content, likes }) {
+function FeedbackItem({ userPhoto, displayName, userName, stars, content, likes, isMine }) {
 
     const { setPopupState } = useContext(PopupStateContext);
 

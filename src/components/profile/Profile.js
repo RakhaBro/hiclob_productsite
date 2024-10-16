@@ -13,20 +13,20 @@ function Profile() {
         setPopupState(false, <div></div>);
     }
     
-    const { user, setUser } = useContext(AuthStateContext);
+    const { userData, userId, setUser } = useContext(AuthStateContext);
     const [ isLoggingOut, setIsLoggingOut ] = useState(false);
     const logout = async () => {
         if (isLoggingOut !== true) {
             setIsLoggingOut(true);
             try {
                 await signOut(auth);
-                setUser(null);
+                setUser(null, null);
             } catch (error) {console.log(error);}
         }
         setIsLoggingOut(false);
     }
 
-    if (user === null) {
+    if (userData === null) {
         return(<LoginForm />);
     } else {
         return(
@@ -37,10 +37,10 @@ function Profile() {
                     </div>
                 </div>
                 <div className='content'>
-                    {user['photo_url'] !== null
+                    {userData['photo_url'] !== null
                         ? <img
                             className='userPhoto'
-                            src={user['photo_url']}
+                            src={userData['photo_url']}
                             alt=''
                         />
                         : <div className='no_photo_url_container'>
@@ -51,11 +51,11 @@ function Profile() {
                             />
                         </div>
                     }
-                    <p>@{user['username']}</p>
+                    <p>@{userData['username']}</p>
                     <p className='gradient_text_2'>
                         You are currently logging in as
                         <br />
-                        <b>{user['display_name']}</b>
+                        <b>{userData['display_name']}</b>
                     </p>
                     <button onClick={logout}>
                         {isLoggingOut === true ? "Logging Out..." : "Logout"}
