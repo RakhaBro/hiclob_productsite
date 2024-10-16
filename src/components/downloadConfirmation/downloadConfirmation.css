@@ -1,0 +1,97 @@
+#downloadConfirmation {
+    width: 90%;
+    max-width: 550px;
+    height: fit-content;
+    padding: calc(36px / 2); box-sizing: border-box;
+    border-radius: calc(20px - 2px);
+    background: var(--background2);
+    color: white;
+    transition: .2s;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    pointer-events: auto;
+}
+
+#downloadConfirmation > div {
+    width: 100%;
+}
+
+#downloadConfirmation > div:first-child {
+    display: flex; align-items: center; justify-content: end;
+}
+
+#downloadConfirmation .btn_close {
+    cursor: pointer;
+    display: flex;
+    align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+    border-radius: 40px;
+    filter: brightness(.4);
+    transition: .1s;
+}
+
+#downloadConfirmation .btn_close:hover {
+    outline: 2px solid white;
+    outline-offset: -2px;
+    transform: scale(1.1);
+    filter: brightness(1);
+}
+
+#downloadConfirmation .btn_close img {
+    width: 24px; aspect-ratio: 1;
+}
+
+
+
+
+
+#downloadConfirmation .content {
+    flex: 1;
+    width: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    gap: calc(36px / 2);
+    text-align: center;
+}
+
+#downloadConfirmation .content h1 {
+    font-size: 24px;
+}
+
+#downloadConfirmation .content .hiclobLogo {
+    height: 36px; width: 100%;
+    object-fit: contain;
+    margin-bottom: 6px;
+}
+
+
+
+
+
+#downloadConfirmation .content button {
+    all: unset; cursor: pointer;
+    width: fit-content;
+    margin-top: calc(36px / 2);
+    margin-bottom: calc(36px / 4);
+    padding: 18px 36px; box-sizing: border-box;
+    display: flex; gap: calc(36px / 4);
+    background: white;
+    color: black;
+    border-radius: 200px;
+    transition: .1s;
+}
+
+#downloadConfirmation .content button:hover {
+    background: black;
+    color: white;
+}
+
+#downloadConfirmation .content button img {
+    width: 18px; aspect-ratio: 1;
+    filter: invert();
+    transition: .1s;
+}
+
+#downloadConfirmation .content button:hover img {
+    filter: unset;
+}

@@ -1,0 +1,102 @@
+#profilePopup {
+    width: 90%;
+    max-width: 550px;
+    height: fit-content;
+    padding: calc(36px / 2); box-sizing: border-box;
+    border-radius: calc(20px - 2px);
+    background: var(--background2);
+    color: white;
+    transition: .2s;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    pointer-events: auto;
+}
+
+#profilePopup > div {
+    width: 100%;
+}
+
+#profilePopup > div:first-child {
+    display: flex; align-items: center; justify-content: end;
+}
+
+#profilePopup .btn_close {
+    cursor: pointer;
+    display: flex;
+    align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+    border-radius: 40px;
+    filter: brightness(.4);
+    transition: .1s;
+}
+
+#profilePopup .btn_close:hover {
+    outline: 2px solid white;
+    outline-offset: -2px;
+    transform: scale(1.1);
+    filter: brightness(1);
+}
+
+#profilePopup .btn_close img {
+    width: 24px; aspect-ratio: 1;
+}
+
+
+
+
+
+#profilePopup .content {
+    flex: 1;
+    width: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    gap: calc(36px / 2);
+    text-align: center;
+}
+
+#profilePopup .content p {
+    font-size: 18px;
+}
+
+#profilePopup .content .userPhoto {
+    height: 80px; aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-bottom: 6px;
+}
+
+#profilePopup .content .no_photo_url_container {
+    height: 80px; aspect-ratio: 1;
+    background: white;
+    border-radius: 100%;
+    margin-bottom: 6px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+#profilePopup .content .no_photo_url {
+    height: 52px; aspect-ratio: 1;
+    object-fit: contain;
+    filter: invert();
+}
+
+
+
+
+
+#profilePopup .content button {
+    all: unset; cursor: pointer;
+    width: fit-content;
+    margin-top: calc(36px / 2);
+    margin-bottom: calc(36px / 4);
+    padding: 18px 36px; box-sizing: border-box;
+    display: flex; gap: calc(36px / 4);
+    background: white;
+    color: black;
+    border-radius: 200px;
+    transition: .1s;
+}
+
+#profilePopup .content button:hover {
+    background: black;
+    color: white;
+}

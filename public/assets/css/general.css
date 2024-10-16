@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+:root {
+    --primaryGradient: linear-gradient(
+        60deg,
+        /* rgb(214, 18, 253),
+        rgb(27, 18, 143),
+        rgb(1, 25, 32) */
+        rgb(12, 17, 44),
+        rgb(20, 20, 136),
+        rgb(50, 89, 245),
+        rgb(29, 106, 221),
+        rgb(255, 89, 247)
+    );
+    --secondaryGradient: linear-gradient(
+        -60deg, 
+        rgb(50, 89, 245),
+        rgb(20, 20, 136),
+        rgb(64, 140, 253),
+        rgb(255, 89, 205)
+    );
+    --blackGradient1: linear-gradient(
+        to bottom,
+        rgba(10, 10, 12, 1),
+        rgba(10, 10, 12, .6),
+        rgba(10, 10, 12, 0)
+    );
+    --blackGradient2: linear-gradient(
+        60deg,
+        rgb(23, 27, 36),
+        rgb(14, 14, 15),
+        /* rgb(10, 10, 12), */
+        rgb(16, 16, 44)
+    );
+    --whiteGradient: linear-gradient(
+        120deg,
+        rgb(255, 255, 255),
+        /* rgb(223, 223, 255), */
+        rgb(137, 163, 202)
+    );
+
+    --background1: rgb(10, 10, 12);
+    --background2: rgb(24, 27, 34);
+    --background3: rgb(41, 49, 56);
+}
+
+@font-face {
+    font-family: 'Mandala';
+    src: url('../fonts/Mandala/Mandala\ Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+
+* {
+    scroll-behavior: smooth;
+    user-select: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0; padding: 0;
+}
+
+p {
+    margin: 2px; padding: 0;
+    font-size: 20px;
+}
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(214, 214, 214);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        -60deg, 
+        rgb(212, 42, 255),
+        rgb(39, 32, 134),
+        rgb(9, 43, 53)
+    );
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        -60deg, 
+        rgb(100, 5, 124),
+        rgb(25, 20, 87),
+        rgb(9, 43, 53)
+    );
+}
+
+
+
+
+.mandala {
+    font-family: 'Mandala';
+}
+
+.lowcolor_text_1 {
+    color: rgb(102, 102, 102);
+}
+
+.gradient_text_1 {
+    background: var(--secondaryGradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient_text_2 {
+    background: var(--whiteGradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text_maxline_1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+
+.nav_solid_layouter {
+    width: 100%; padding: 16px 0px;
+}
+
+.nav_solid_layouter::after {
+    content: ""; color: transparent;
+    padding: 10px 20px;
+}
+
+
+
+
+.box_shadow_dark {
+    box-shadow:
+        /* -2px -2px 8px rgba(20, 22, 27, .2), */
+        2px 2px 8px rgba(12, 18, 20, .2);
+}
