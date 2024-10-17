@@ -7,17 +7,37 @@ import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackForm from '../../forms/feedbackForm/FeedbackForm.js';
 import { useNavigate } from 'react-router-dom';
 import { AuthStateContext } from '../../providers/auth_provider.js';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../firebase.js';
 
 function FeedbacksPage() {
 
     const navigate = useNavigate();
     const { userId, availableFeedback, check_feedbackAvailability } = useContext(AuthStateContext);
-    const [ isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded ] = useState(false);
+    const [isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded] = useState(false);
 
-    const initstate = async () => {
-        await check_feedbackAvailability();
+    const [feedbacks, setFeedbacks] = useState([]);
+    const [isFeedbacksLoaded, setIsFeedbacksLoaded] = useState(false);
+    const fetch_feedbacks = async () => {
+        const feedbacks_snapshot = await getDocs(query(
+            collection(db, 'feedbacks'),
+            where('uid', '!=', userId)
+        ))
+        const feedback_list = feedbacks_snapshot.docs.map(
+            doc => ({
+                id: doc.id,
+                data: doc.data()
+            })
+        );
+        setFeedbacks(feedback_list);
+        setIsFeedbacksLoaded(true);
+    }
+
+    const initstate = () => {
+        fetch_feedbacks();
+        check_feedbackAvailability();
         setIsAvailableFeedbackLoaded(true);
-    }    
+    }
 
     useEffect(() => {
         initstate();
@@ -33,7 +53,7 @@ function FeedbacksPage() {
     function showPopup(ui) {
         setPopupState(true, ui);
     }
-    
+
     function closePopup() {
         setPopupState(false, <div></div>);
     }
@@ -84,106 +104,53 @@ function FeedbacksPage() {
                         <div></div>
                     </div>
                     {
-                    isAvailableFeedbackLoaded !== true
-                    ? <div id='feedbackLoading_container'></div>
-                    : availableFeedback !== null
-                        ? <FeedbackItem
-                            uid={userId}
-                            stars={availableFeedback['star']}
-                            content={availableFeedback['feedback']}
-                            likes={availableFeedback['likes_num'] ?? 0}
-                            lastSubmitted={
-                                availableFeedback !== null
-                                ? availableFeedback['time_submitted'].seconds
-                                : null
-                            }
-                            isMine={true}
-                        />
-                        : <div id='startFeedback'>
-                            <h2>Start your feedback!</h2>
-                            <p className='gradient_text_2'>Help our team to improve Hiclob by giving us your feedback!</p>
-                            <button onClick={() => showPopup(<FeedbackForm downloadFunc={download} />)}>
-                                <img src={process.env.PUBLIC_URL + 'assets/svg/add.svg'} alt='' />
-                                <p>Give feedback</p>
-                            </button>
-                        </div>
+                        isAvailableFeedbackLoaded !== true
+                            ? <div id='feedbackLoading_container'></div>
+                            : availableFeedback !== null
+                                ? <FeedbackItem
+                                    uid={userId}
+                                    stars={availableFeedback['star']}
+                                    content={availableFeedback['feedback']}
+                                    likes={availableFeedback['likes_num'] ?? 0}
+                                    lastSubmitted={
+                                        availableFeedback !== null
+                                            ? availableFeedback['time_submitted'].seconds
+                                            : null
+                                    }
+                                    isMine={true}
+                                />
+                                : <div id='startFeedback'>
+                                    <h2>Start your feedback!</h2>
+                                    <p className='gradient_text_2'>Help our team to improve Hiclob by giving us your feedback!</p>
+                                    <button onClick={() => showPopup(<FeedbackForm downloadFunc={download} />)}>
+                                        <img src={process.env.PUBLIC_URL + 'assets/svg/add.svg'} alt='' />
+                                        <p>Give feedback</p>
+                                    </button>
+                                </div>
                     }
                 </div>
 
                 <div id="content">
-
-                    <FeedbackItem
-                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
-                        stars={3}
-                        content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
-                        likes={127}
-                        lastSubmitted={
-                            availableFeedback !== null
-                            ? availableFeedback['time_submitted'].seconds
-                            : null
-                        }
-                    />
-
-                    <FeedbackItem
-                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
-                        stars={4}
-                        content={"This app is just badasss 🔥🔥. But, Imma give a feedback for improvements. Add country option feature to find new mates!"}
-                        likes={80}
-                        lastSubmitted={
-                            availableFeedback !== null
-                            ? availableFeedback['time_submitted'].seconds
-                            : null
-                        }
-                    />
-
-                    <FeedbackItem
-                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
-                        stars={5}
-                        content={"Hey, I have an idea to make this app profitable! Limit some feature for free users and push them to get premium! What do you all think about this idea? Please like my feedback if you agree."}
-                        likes={2180}
-                        lastSubmitted={
-                            availableFeedback !== null
-                            ? availableFeedback['time_submitted'].seconds
-                            : null
-                        }
-                    />
-
-                    <FeedbackItem
-                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
-                        stars={4}
-                        content={"This app is just badasss 🔥🔥. But, Imma give a feedback for improvements. Add country option feature to find new mates!"}
-                        likes={80}
-                        lastSubmitted={
-                            availableFeedback !== null
-                            ? availableFeedback['time_submitted'].seconds
-                            : null
-                        }
-                    />
-
-                    <FeedbackItem
-                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
-                        stars={5}
-                        content={"Hey, I have an idea to make this app profitable! Limit some feature for free users and push them to get premium! What do you all think about this idea? Please like my feedback if you agree."}
-                        likes={2180}
-                        lastSubmitted={
-                            availableFeedback !== null
-                            ? availableFeedback['time_submitted'].seconds
-                            : null
-                        }
-                    />
-
-                    <FeedbackItem
-                        uid={"zkWKeH7naRO70LjQPEXRGMNEsMm2"}
-                        stars={3}
-                        content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
-                        likes={127}
-                        lastSubmitted={
-                            availableFeedback !== null
-                            ? availableFeedback['time_submitted'].seconds
-                            : null
-                        }
-                    />
-
+                    {
+                        feedbacks.length < 1
+                            ? (
+                                !isFeedbacksLoaded
+                                    ? (<div><p><b>Loading...</b></p></div>)
+                                    : (<div><p><b>No any other feedbacks found.</b></p></div>)
+                            )
+                            : (
+                                feedbacks.map((feedback) => (
+                                    <FeedbackItem
+                                        key={feedback.id}
+                                        uid={feedback.data['uid']}
+                                        stars={feedback.data['star']}
+                                        content={feedback.data['feedback']}
+                                        likes={feedback.data['likes'] ?? 0}
+                                        lastSubmitted={feedback.data['time_submitted']}
+                                    />
+                                ))
+                            )
+                    }
                 </div>
             </div>
 
