@@ -9,7 +9,7 @@ import { auth, db } from '../../firebase.js';
 function LoginForm({downloadFunc}) {
 
     const { setPopupState } = useContext(PopupStateContext);
-    const { userId, userData, setUser } = useContext(AuthStateContext);
+    const { setUser } = useContext(AuthStateContext);
     
     const closePopup = () => {
         setPopupState(false, <div></div>);

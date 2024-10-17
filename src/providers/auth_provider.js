@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { db } from "../firebase.js";
-import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export const AuthStateContext = createContext();
 

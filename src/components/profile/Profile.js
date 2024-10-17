@@ -13,7 +13,7 @@ function Profile() {
         setPopupState(false, <div></div>);
     }
     
-    const { userData, userId, setUser } = useContext(AuthStateContext);
+    const { userData, setUser } = useContext(AuthStateContext);
     const [ isLoggingOut, setIsLoggingOut ] = useState(false);
     const logout = async () => {
         if (isLoggingOut !== true) {
