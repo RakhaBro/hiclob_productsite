@@ -12,28 +12,17 @@ import { collection, getDocs, query, where, Timestamp } from "firebase/firestore
 
 function FeedbacksPage() {
 
-    const { userId } = useContext(AuthStateContext);
-    const [ availableFeedback, setAvailableFeedback ] = useState(null);
-    const [ isLoaded, setIsLoaded ] = useState(false);
     const navigate = useNavigate();
+    const { userId, availableFeedback, check_feedbackAvailability } = useContext(AuthStateContext);
+    const [ isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded ] = useState(false);
 
-    const check_feedbackAvailability = async () => {
-        if (userId !== null) {
-            const availableFeedback_queried = await getDocs(query(
-                collection(db, 'feedbacks'),
-                where('uid', '==', userId)
-            ));
-            const availableFeedback_doc = availableFeedback_queried.docs[0];
-            if (availableFeedback_queried.docs.length > 0) {
-                var availableFeedback_data = availableFeedback_doc.data();
-                setAvailableFeedback(availableFeedback_data);
-            }
-        }
-        setIsLoaded(true);
-    }
+    const initstate = async () => {
+        await check_feedbackAvailability();
+        setIsAvailableFeedbackLoaded(true);
+    }    
 
     useEffect(() => {
-        check_feedbackAvailability();
+        initstate();
     }, []);
 
     const download = () => {
@@ -97,7 +86,7 @@ function FeedbacksPage() {
                         <div></div>
                     </div>
                     {
-                    isLoaded !== true
+                    isAvailableFeedbackLoaded !== true
                     ? <div id='feedbackLoading_container'></div>
                     : availableFeedback !== null
                         ? <FeedbackItem
@@ -105,7 +94,11 @@ function FeedbacksPage() {
                             stars={availableFeedback['star']}
                             content={availableFeedback['feedback']}
                             likes={availableFeedback['likes_num'] ?? 0}
-                            // lastSubmitted={availableFeedback['time_submitted']}
+                            lastSubmitted={
+                                availableFeedback !== null
+                                ? availableFeedback['time_submitted'].seconds
+                                : null
+                            }
                             isMine={true}
                         />
                         : <div id='startFeedback'>
@@ -126,7 +119,11 @@ function FeedbacksPage() {
                         stars={3}
                         content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
                         likes={127}
-                        // lastSubmitted={availableFeedback['time_submitted']}
+                        lastSubmitted={
+                            availableFeedback !== null
+                            ? availableFeedback['time_submitted'].seconds
+                            : null
+                        }
                     />
 
                     <FeedbackItem
@@ -134,7 +131,11 @@ function FeedbacksPage() {
                         stars={4}
                         content={"This app is just badasss 🔥🔥. But, Imma give a feedback for improvements. Add country option feature to find new mates!"}
                         likes={80}
-                        // lastSubmitted={availableFeedback['time_submitted']}
+                        lastSubmitted={
+                            availableFeedback !== null
+                            ? availableFeedback['time_submitted'].seconds
+                            : null
+                        }
                     />
 
                     <FeedbackItem
@@ -142,7 +143,11 @@ function FeedbacksPage() {
                         stars={5}
                         content={"Hey, I have an idea to make this app profitable! Limit some feature for free users and push them to get premium! What do you all think about this idea? Please like my feedback if you agree."}
                         likes={2180}
-                        // lastSubmitted={availableFeedback['time_submitted']}
+                        lastSubmitted={
+                            availableFeedback !== null
+                            ? availableFeedback['time_submitted'].seconds
+                            : null
+                        }
                     />
 
                     <FeedbackItem
@@ -150,7 +155,11 @@ function FeedbacksPage() {
                         stars={4}
                         content={"This app is just badasss 🔥🔥. But, Imma give a feedback for improvements. Add country option feature to find new mates!"}
                         likes={80}
-                        // lastSubmitted={availableFeedback['time_submitted']}
+                        lastSubmitted={
+                            availableFeedback !== null
+                            ? availableFeedback['time_submitted'].seconds
+                            : null
+                        }
                     />
 
                     <FeedbackItem
@@ -158,7 +167,11 @@ function FeedbacksPage() {
                         stars={5}
                         content={"Hey, I have an idea to make this app profitable! Limit some feature for free users and push them to get premium! What do you all think about this idea? Please like my feedback if you agree."}
                         likes={2180}
-                        // lastSubmitted={availableFeedback['time_submitted']}
+                        lastSubmitted={
+                            availableFeedback !== null
+                            ? availableFeedback['time_submitted'].seconds
+                            : null
+                        }
                     />
 
                     <FeedbackItem
@@ -166,7 +179,11 @@ function FeedbacksPage() {
                         stars={3}
                         content={"Just make it simple, this app is kind of awesome! Let me give you 2 answers of why. First, I can meet someone strange that fit my interests. Second, I can create a public talk and many people that I never met before can watch me."}
                         likes={127}
-                        // lastSubmitted={availableFeedback['time_submitted']}
+                        lastSubmitted={
+                            availableFeedback !== null
+                            ? availableFeedback['time_submitted'].seconds
+                            : null
+                        }
                     />
 
                 </div>

@@ -5,15 +5,14 @@ import { db } from '../../firebase.js';
 import { format } from 'date-fns';
 import './feedbackDetail.css';
 
-function FeedbackDetail({ uid, stars, content, likes, lastSubmitted, isMine }) {
+function FeedbackDetail({ uid, stars, content, likes, lastSubmitted }) {
 
     const [ feedbackSender, setFeedbackSender ] = useState(null);
     const [isLoaded, setIsloaded] = useState(false);
-    const [ formattedLastSubmitted, setFormattedLastSubmitted ] = useState(null);
+    const [ formattedLastSubmitted, setFormattedLastSubmitted ] = useState("");
 
     const setup_feedbackData = async () => {
         try {
-            console.log("tes");
             const userRef = doc(db, "users", uid);
             const user_snapshot = await getDoc(userRef);
             if (user_snapshot.exists) {
@@ -21,8 +20,8 @@ function FeedbackDetail({ uid, stars, content, likes, lastSubmitted, isMine }) {
                 setFeedbackSender(user_data);
                 console.log("Feedback sender = " + JSON.stringify(feedbackSender));
             }
-            if (lastSubmitted !== undefined) {
-                const lastSubmitted_date = lastSubmitted.toDate();
+            if (!isNaN(lastSubmitted)) {
+                const lastSubmitted_date = new Date(lastSubmitted * 1000);
                 const formattedDate = format(lastSubmitted_date, "MMMM do yyyy");
                 setFormattedLastSubmitted(formattedDate);
             }
@@ -31,7 +30,7 @@ function FeedbackDetail({ uid, stars, content, likes, lastSubmitted, isMine }) {
             console.log(error);
         }
     }
-
+    
     useEffect(() => {
         setup_feedbackData();
     }, []);
@@ -105,8 +104,8 @@ function FeedbackDetail({ uid, stars, content, likes, lastSubmitted, isMine }) {
                                 </div>
                                 <p className='date_joined lowcolor_text_1'>
                                     {
-                                        formattedLastSubmitted !== null
-                                            ? "Last submitted" + {formattedLastSubmitted}
+                                        formattedLastSubmitted !== ""
+                                            ? "Last submitted " + formattedLastSubmitted
                                             : null
                                     }
                                 </p>

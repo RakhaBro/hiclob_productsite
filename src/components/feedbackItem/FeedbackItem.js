@@ -26,13 +26,11 @@ function FeedbackItem({ uid, stars, content, likes, lastSubmitted, isMine }) {
 
     const get_feedbackSender = async () => {
         try {
-            console.log("tes");
             const userRef = doc(db, "users", uid);
             const user_snapshot = await getDoc(userRef);
             if (user_snapshot.exists) {
                 const user_data = user_snapshot.data();
                 setFeedbackSender(user_data);
-                console.log("Feedback sender = " + JSON.stringify(feedbackSender));
                 setIsloaded(true);
             }
         } catch (error) {
