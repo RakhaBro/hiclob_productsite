@@ -25,6 +25,8 @@ export const AuthProvider = ({ children }) => {
             if (availableFeedback_queried.docs.length > 0) {
                 var availableFeedback_data = availableFeedback_doc.data();
                 setAvailableFeedback(availableFeedback_data);
+            } else {
+                setAvailableFeedback(null);
             }
         }
     }

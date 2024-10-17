@@ -57,7 +57,7 @@
     width: 100%;
     display: flex; flex-direction: column;
     align-items: center; justify-content: space-between;
-    gap: 36px;
+    gap: calc(36px / 2);
     text-align: center;
 }
 
@@ -81,7 +81,7 @@
     max-width: 600px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 36px;
+    gap: calc(36px / 2);
 }
 
 #feedbackForm .content .feedbackform .upper {
@@ -127,29 +127,31 @@
 #feedbackForm .content .feedbackform textarea {
     all: unset;
     resize: none;
-    overflow: hidden;
     border: 2px solid white;
     padding: calc(36px / 4);
     border-radius: 18px;
     height: 100%;
     width: 80%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#feedbackForm .content .feedbackform textarea::-webkit-scrollbar {
+    display: none;
 }
 
 
 
-
-#feedbackForm .content .feedbackform .feedbackform_under {
+#feedbackForm .content .feedbackform .btn_container {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
+    gap: calc(18px / 2);
 }
 
-#feedbackForm .content .feedbackform .feedbackform_under a {
-    cursor: pointer;
-    font-weight: bold;
-    text-decoration: underline;
-}
 
-#feedbackForm .content .feedbackform button {
+
+
+#feedbackForm .content .feedbackform .btn_primary {
     all: unset; cursor: pointer;
     width: fit-content;
     padding: 18px 36px; box-sizing: border-box;
@@ -159,13 +161,26 @@
     transition: .1s;
 }
 
-#feedbackForm .content .feedbackform button:hover {
+#feedbackForm .content .feedbackform .btn_primary:hover {
     background: black;
     color: white;
 }
 
 #feedbackForm .content .feedbackform p {
     width: 80%;
+}
+
+#feedbackForm .content .btn_secondary {
+    all: unset;
+    padding: 9px 18px;
+    border-radius: 100vh;
+    transition: .2s;
+}
+
+#feedbackForm .content .btn_secondary:hover {
+    cursor: pointer;
+    color: white;
+    background: black;
 }
 
 

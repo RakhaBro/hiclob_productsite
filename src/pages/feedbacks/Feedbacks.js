@@ -1,14 +1,12 @@
+import './feedbacks.css';
 import Footer from '../../components/footer/Footer';
 import Nav from '../../components/nav/nav';
 import FeedbackItem from '../../components/feedbackItem/FeedbackItem.js';
-import './feedbacks.css';
 import { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackForm from '../../forms/feedbackForm/FeedbackForm.js';
 import { useNavigate } from 'react-router-dom';
-import { db } from "../../firebase.js";
 import { AuthStateContext } from '../../providers/auth_provider.js';
-import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
 
 function FeedbacksPage() {
 

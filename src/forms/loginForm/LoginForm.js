@@ -126,7 +126,7 @@ function LoginForm({downloadFunc}) {
                             {isLoggingIn === true ? "Logging in..." : "Login"}
                         </button>
                         <p className='gradient_text_2'>
-                            Have no account? Install <span onClick={downloadFunc}>Hiclob latest</span> to register!
+                            Have no account? Download <span onClick={downloadFunc}>Hiclob</span> to register!
                         </p>
                     </div>
                 </div>
