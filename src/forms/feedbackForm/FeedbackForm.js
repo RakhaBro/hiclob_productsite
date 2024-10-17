@@ -9,7 +9,7 @@ import { collection, addDoc, updateDoc, Timestamp, getDocs, query, where, doc } 
 function FeedbackForm({downloadFunc}) {
 
     const { setPopupState } = useContext(PopupStateContext);
-    const { userId, userData } = useContext(AuthStateContext);
+    const { userId, userData, check_feedbackAvailability } = useContext(AuthStateContext);
     const [ starPicked, setStarPicked ] = useState(0);
     const [ feedback, setFeedback ] = useState("");
     let stars_element = []
@@ -92,6 +92,7 @@ function FeedbackForm({downloadFunc}) {
                 document.getElementById("invalid").style.color = "rgb(255, 68, 83)";
             }
         }
+        check_feedbackAvailability();
         setIsSendingFeedback(false);
     }
 
