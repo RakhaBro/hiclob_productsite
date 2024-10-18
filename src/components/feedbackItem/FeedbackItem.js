@@ -14,15 +14,24 @@ function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, 
     const { setPopupState } = useContext(PopupStateContext);
     const [ feedbackSender, setFeedbackSender ] = useState(null);
     const [ isLoaded, setIsloaded ] = useState(false);
+    const [ updatedLikes, setUpdatedLikes ] = useState(likes);
+    const [ isLiked, setIsLiked ] = useState(false);
     const navigate = useNavigate();
+
+    function setLike() {
+        setIsLiked(!isLiked);
+        setUpdatedLikes(isLiked === true ? updatedLikes - 1 : updatedLikes + 1);
+    }
 
     const feedbackDetetail_ui = <FeedbackDetail
         feedback_id={feedback_id}
         feedbackSender={feedbackSender}
         stars={stars}
         content={content}
-        likes={likes}
+        likes={updatedLikes}
         lastSubmitted={lastSubmitted}
+        isLiked={isLiked}
+        likeFunc_callback={setLike}
     />;
 
     const get_feedbackSender = async () => {
@@ -62,15 +71,6 @@ function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, 
         }
     }
 
-    const [ isLiked, setIsLiked ] = useState(false);
-    
-    function setLike() {
-        if (isLiked === true) {
-            setIsLiked(false);
-        } else {
-            setIsLiked(true);
-        }
-    }
 
     let stars_element = [];
     for (let i = 1; i <= 5; i++) {
@@ -138,7 +138,7 @@ function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, 
                             }
                         </div>
                         <div className='like_container'>
-                            <p className="gradient_text_2">{likes}</p>
+                            <p className="gradient_text_2">{updatedLikes}</p>
                             <img
                                 onClick={setLike}
                                 src={

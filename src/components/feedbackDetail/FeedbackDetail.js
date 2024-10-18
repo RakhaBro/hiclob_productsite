@@ -3,9 +3,11 @@ import { PopupStateContext } from '../../providers/popup_provider';
 import { format } from 'date-fns';
 import './feedbackDetail.css';
 
-function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, lastSubmitted }) {
+function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, lastSubmitted, isLiked, likeFunc_callback }) {
 
     const [formattedLastSubmitted, setFormattedLastSubmitted] = useState("");
+    const [updatedLikes, setUpdatedLikes] = useState(likes);
+    const [updatedIsLiked, setUpdatedIsLiked] = useState(isLiked);
 
     const setup_feedbackTime = async () => {
         if (!isNaN(lastSubmitted)) {
@@ -38,14 +40,11 @@ function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, la
         }
     }
 
-    const [isLiked, setIsLiked] = useState(false);
 
     function setLike() {
-        if (isLiked === true) {
-            setIsLiked(false);
-        } else {
-            setIsLiked(true);
-        }
+        setUpdatedIsLiked(!updatedIsLiked);
+        setUpdatedLikes(updatedIsLiked === true ? updatedLikes - 1 : updatedLikes + 1);
+        likeFunc_callback();
     }
 
     return (
@@ -94,11 +93,11 @@ function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, la
                             <p className='gradient_text_2'>{stars}/5</p>
                         </div>
                         <div className='like_container gradient_text_2' onClick={setLike}>
-                            {likes}
+                            {updatedLikes}
                             <img
                                 src={
                                     process.env.PUBLIC_URL +
-                                    (isLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
+                                    (updatedIsLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
                                 }
                                 alt=''
                             />
