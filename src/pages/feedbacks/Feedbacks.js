@@ -61,8 +61,8 @@ function FeedbacksPage() {
 
     
     const initstate = async () => {
-        fetch_feedbacks();
         setupFeedbackAggregateData();
+        await fetch_feedbacks();
         setIsAvailableFeedbackLoaded(true);
     }
 
