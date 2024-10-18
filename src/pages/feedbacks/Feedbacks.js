@@ -33,15 +33,15 @@ function FeedbacksPage() {
         setIsFeedbacksLoaded(true);
     }
 
-    const initstate = () => {
-        fetch_feedbacks();
-        check_feedbackAvailability();
+    const initstate = async () => {
+        await fetch_feedbacks();
+        await check_feedbackAvailability();
         setIsAvailableFeedbackLoaded(true);
     }
 
     useEffect(() => {
         initstate();
-    }, []);
+    }, [check_feedbackAvailability()]);
 
     const download = () => {
         closePopup();
@@ -104,9 +104,8 @@ function FeedbacksPage() {
                         <div></div>
                     </div>
                     {
-                        isAvailableFeedbackLoaded !== true
-                            ? <div id='feedbackLoading_container'></div>
-                            : availableFeedback !== null
+                        isAvailableFeedbackLoaded === true && (feedbacks.length < 1 || feedbacks.length >= 3)
+                            ? availableFeedback !== null
                                 ? <FeedbackItem
                                     uid={userId}
                                     stars={availableFeedback['star']}
@@ -127,6 +126,7 @@ function FeedbacksPage() {
                                         <p>Give feedback</p>
                                     </button>
                                 </div>
+                            : <div id='feedbackLoading_container'></div>
                     }
                 </div>
 
@@ -138,8 +138,31 @@ function FeedbacksPage() {
                                     ? (<div><p><b>Loading...</b></p></div>)
                                     : (<div><p><b>No any other feedbacks found.</b></p></div>)
                             )
-                            : (
-                                feedbacks.map((feedback) => (
+                            : ([
+                                isAvailableFeedbackLoaded === true && (feedbacks.length > 0 && feedbacks.length < 3)
+                                    ? availableFeedback !== null
+                                        ? <FeedbackItem
+                                            uid={userId}
+                                            stars={availableFeedback['star']}
+                                            content={availableFeedback['feedback']}
+                                            likes={availableFeedback['likes_num'] ?? 0}
+                                            lastSubmitted={
+                                                availableFeedback !== null
+                                                    ? availableFeedback['time_submitted'].seconds
+                                                    : null
+                                            }
+                                            isMine={true}
+                                        />
+                                        : <div id='startFeedback'>
+                                            <h2>Start your feedback!</h2>
+                                            <p className='gradient_text_2'>Help our team to improve Hiclob by giving us your feedback!</p>
+                                            <button onClick={() => showPopup(<FeedbackForm downloadFunc={download} />)}>
+                                                <img src={process.env.PUBLIC_URL + 'assets/svg/add.svg'} alt='' />
+                                                <p>Give feedback</p>
+                                            </button>
+                                        </div>
+                                    : null,
+                                ...feedbacks.map((feedback) => (
                                     <FeedbackItem
                                         key={feedback.id}
                                         uid={feedback.data['uid']}
@@ -149,7 +172,7 @@ function FeedbacksPage() {
                                         lastSubmitted={feedback.data['time_submitted']}
                                     />
                                 ))
-                            )
+                            ])
                     }
                 </div>
             </div>

@@ -28,6 +28,8 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setAvailableFeedback(null);
             }
+        } else {
+            setAvailableFeedback(null);
         }
     }
 
