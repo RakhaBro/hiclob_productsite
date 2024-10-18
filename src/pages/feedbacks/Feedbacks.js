@@ -169,7 +169,7 @@ function FeedbacksPage() {
                                         stars={feedback.data['star']}
                                         content={feedback.data['feedback']}
                                         likes={feedback.data['likes'] ?? 0}
-                                        lastSubmitted={feedback.data['time_submitted']}
+                                        lastSubmitted={feedback.data['time_submitted'].seconds}
                                     />
                                 ))
                             ])

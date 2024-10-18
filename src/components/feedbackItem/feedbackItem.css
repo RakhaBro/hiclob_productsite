@@ -2,8 +2,8 @@
 .feedback_item_wrapper {
     flex: 1;
     padding: 2px; box-sizing: border-box;
-    min-width: calc((100% / 3) - (36px / 4));
-    max-width: calc((100% / 3) - (36px / 4));
+    min-width: calc((100% / 3) - (36px / 2));
+    max-width: calc((100% / 3) - (36px / 2));
     aspect-ratio: 4/3;
     background: var(--secondaryGradient);
     border-radius: 20px;
