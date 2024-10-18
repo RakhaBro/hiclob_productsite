@@ -13,12 +13,13 @@ import { db } from '../../firebase.js';
 function FeedbacksPage() {
 
     const navigate = useNavigate();
-    const { userId, availableFeedback, check_feedbackAvailability } = useContext(AuthStateContext);
+    const { userId, myFeedback } = useContext(AuthStateContext);
     const [isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded] = useState(false);
 
     const [feedbacks, setFeedbacks] = useState([]);
     const [isFeedbacksLoaded, setIsFeedbacksLoaded] = useState(false);
     const fetch_feedbacks = async () => {
+        console.log("Fetching list of feedbacks...");
         const feedbacks_snapshot = await getDocs(query(
             collection(db, 'feedbacks'),
             where('uid', '!=', userId)
@@ -31,17 +32,17 @@ function FeedbacksPage() {
         );
         setFeedbacks(feedback_list);
         setIsFeedbacksLoaded(true);
+        console.log("List of feedbacks fetched");
     }
 
     const initstate = async () => {
         await fetch_feedbacks();
-        await check_feedbackAvailability();
         setIsAvailableFeedbackLoaded(true);
     }
 
     useEffect(() => {
         initstate();
-    }, [check_feedbackAvailability()]);
+    }, []);
 
     const download = () => {
         closePopup();
@@ -105,15 +106,15 @@ function FeedbacksPage() {
                     </div>
                     {
                         isAvailableFeedbackLoaded === true && (feedbacks.length < 1 || feedbacks.length >= 3)
-                            ? availableFeedback !== null
+                            ? myFeedback !== null
                                 ? <FeedbackItem
                                     uid={userId}
-                                    stars={availableFeedback['star']}
-                                    content={availableFeedback['feedback']}
-                                    likes={availableFeedback['likes_num'] ?? 0}
+                                    stars={myFeedback['star']}
+                                    content={myFeedback['feedback']}
+                                    likes={myFeedback['likes_num'] ?? 0}
                                     lastSubmitted={
-                                        availableFeedback !== null
-                                            ? availableFeedback['time_submitted'].seconds
+                                        myFeedback !== null
+                                            ? myFeedback['time_submitted'].seconds
                                             : null
                                     }
                                     isMine={true}
@@ -140,15 +141,15 @@ function FeedbacksPage() {
                             )
                             : ([
                                 isAvailableFeedbackLoaded === true && (feedbacks.length > 0 && feedbacks.length < 3)
-                                    ? availableFeedback !== null
+                                    ? myFeedback !== null
                                         ? <FeedbackItem
                                             uid={userId}
-                                            stars={availableFeedback['star']}
-                                            content={availableFeedback['feedback']}
-                                            likes={availableFeedback['likes_num'] ?? 0}
+                                            stars={myFeedback['star']}
+                                            content={myFeedback['feedback']}
+                                            likes={myFeedback['likes_num'] ?? 0}
                                             lastSubmitted={
-                                                availableFeedback !== null
-                                                    ? availableFeedback['time_submitted'].seconds
+                                                myFeedback !== null
+                                                    ? myFeedback['time_submitted'].seconds
                                                     : null
                                             }
                                             isMine={true}

@@ -4,12 +4,12 @@ import { PopupStateContext } from '../../providers/popup_provider.js';
 import LoginForm from '../loginForm/LoginForm.js';
 import { AuthStateContext } from '../../providers/auth_provider.js';
 import { db } from "../../firebase.js";
-import { collection, addDoc, updateDoc, Timestamp, getDocs, query, where, doc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, Timestamp, doc, deleteDoc } from "firebase/firestore";
 
 function FeedbackForm({ downloadFunc }) {
 
     const { setPopupState } = useContext(PopupStateContext);
-    const { userId, userData, check_feedbackAvailability } = useContext(AuthStateContext);
+    const { userId, userData, myFeedback, setMyFeedback, myFeedbackId, setMyFeedbackId } = useContext(AuthStateContext);
     const [starPicked, setStarPicked] = useState(0);
     const [feedback, setFeedback] = useState("");
     let stars_element = []
@@ -18,23 +18,17 @@ function FeedbackForm({ downloadFunc }) {
     const [isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded] = useState(false);
     const [availableFeedbackId, setAvailableFeedbackId] = useState(null);
 
-    const get_availableDocs = async () => {
-        const availableFeedback_queried = await getDocs(query(
-            collection(db, 'feedbacks'),
-            where('uid', '==', userId)
-        ));
-        const availableFeedback_doc = availableFeedback_queried.docs[0];
-        if (availableFeedback_queried.docs.length > 0) {
-            setAvailableFeedbackId(availableFeedback_queried.docs[0].id);
-            var availableFeedback_data = availableFeedback_doc.data();
-            setStarPicked(availableFeedback_data['star']);
-            setFeedback(availableFeedback_data['feedback']);
+    const get_myFeedback = async () => {
+        if (myFeedback !== null && myFeedbackId !== null) {
+            setAvailableFeedbackId(myFeedbackId);
+            setStarPicked(myFeedback['star']);
+            setFeedback(myFeedback['feedback']);
         }
         setIsAvailableFeedbackLoaded(true);
     }
 
     useEffect(() => {
-        get_availableDocs();
+        get_myFeedback();
     }, [userData]);
 
     for (let i = 1; i <= 5; i++) {
@@ -70,29 +64,26 @@ function FeedbackForm({ downloadFunc }) {
         if (isSendingFeedback !== true) {
             if (feedback !== null && feedback !== "") {
                 setIsSendingFeedback(true);
+                const feedback_data_to_send = {
+                    uid: userId,
+                    star: starPicked,
+                    feedback: feedback,
+                    time_submitted: Timestamp.now()
+                };
                 if (availableFeedbackId !== null) {
                     const doc_toUpdate = doc(db, "feedbacks", availableFeedbackId);
-                    await updateDoc(doc_toUpdate, {
-                        uid: userId,
-                        star: starPicked,
-                        feedback: feedback,
-                        time_submitted: Timestamp.now()
-                    })
+                    await updateDoc(doc_toUpdate, feedback_data_to_send)
                 } else {
-                    await addDoc(collection(db, "feedbacks"), {
-                        uid: userId,
-                        star: starPicked,
-                        feedback: feedback,
-                        time_submitted: Timestamp.now()
-                    });
+                    const addedDoc = await addDoc(collection(db, "feedbacks"), feedback_data_to_send);
+                    setMyFeedbackId(addedDoc.id);
                 }
+                setMyFeedback(feedback_data_to_send);
                 setIsSent(true);
             } else {
                 console.log("Fill out the feedback paragraph first!");
                 document.getElementById("invalid").style.color = "rgb(255, 68, 83)";
             }
         }
-        check_feedbackAvailability();
         setIsSendingFeedback(false);
     }
 
@@ -100,8 +91,8 @@ function FeedbackForm({ downloadFunc }) {
     const [isDeleted, setIsDeleted] = useState(false);
     const delete_feedback = async () => {
         await deleteDoc(doc(db, "feedbacks", availableFeedbackId));
-        check_feedbackAvailability();
         setIsDeleted(true);
+        setMyFeedback(null);
     }
 
 

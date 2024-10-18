@@ -17,7 +17,7 @@ function FeedbackItem({ uid, stars, content, likes, lastSubmitted, isMine }) {
     const navigate = useNavigate();
 
     const feedbackDetetail_ui = <FeedbackDetail
-        uid={uid}
+        feedbackSender={feedbackSender}
         stars={stars}
         content={content}
         likes={likes}

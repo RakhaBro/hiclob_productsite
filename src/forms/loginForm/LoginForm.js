@@ -3,7 +3,7 @@ import './loginForm.css';
 import { PopupStateContext } from '../../providers/popup_provider';
 import { AuthStateContext } from '../../providers/auth_provider';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, query, where, doc, getDocs, getDoc } from 'firebase/firestore';
+import { collection, query, where, doc, getDocs, getDoc, limit } from 'firebase/firestore';
 import { auth, db } from '../../firebase.js';
 
 function LoginForm({downloadFunc}) {
@@ -53,7 +53,8 @@ function LoginForm({downloadFunc}) {
                         // TRY LOGIN WITH UESRNAME
                         const username_query = query(
                             collection(db, 'users'),
-                            where('username', '==', email_or_username)
+                            where('username', '==', email_or_username),
+                            limit(1)
                         );
                         const user_snapshot = await getDocs(username_query);
                         if (user_snapshot.docs.length > 0) {

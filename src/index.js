@@ -8,13 +8,11 @@ import { AuthProvider } from './providers/auth_provider.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <PopupProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </PopupProvider>
-  </React.StrictMode>
+  <PopupProvider>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </PopupProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

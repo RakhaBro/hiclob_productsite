@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { db } from "../firebase.js";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 
 export const AuthStateContext = createContext();
 
@@ -14,28 +14,35 @@ export const AuthProvider = ({ children }) => {
         setUserData(userData);
     }
 
-    const [ availableFeedback, setAvailableFeedback ] = useState(null);
+    const [ myFeedback, setMyFeedback ] = useState(null);
+    const [ myFeedbackId, setMyFeedbackId ] = useState(null);
+
     const check_feedbackAvailability = async () => {
+        console.log("User is logged in. Checking if it has given feedback before...");
         if (userId !== null) {
-            const availableFeedback_queried = await getDocs(query(
+            const myFeedback_queried = await getDocs(query(
                 collection(db, 'feedbacks'),
-                where('uid', '==', userId)
+                where('uid', '==', userId),
+                limit(1)
             ));
-            const availableFeedback_doc = availableFeedback_queried.docs[0];
-            if (availableFeedback_queried.docs.length > 0) {
-                var availableFeedback_data = availableFeedback_doc.data();
-                setAvailableFeedback(availableFeedback_data);
+            if (myFeedback_queried.docs.length > 0) {
+                const myFeedback_doc = myFeedback_queried.docs[0];
+                setMyFeedbackId(myFeedback_doc.id);
+                var myFeedback_data = myFeedback_doc.data();
+                setMyFeedback(myFeedback_data);
             } else {
-                setAvailableFeedback(null);
+                setMyFeedback(null);
             }
         } else {
-            setAvailableFeedback(null);
+            setMyFeedback(null);
         }
     }
 
     useEffect(() => {
+        console.log("Checking if user is logged in.");
         if (userData == null && userId == null) {
-            setAvailableFeedback(null);
+            setMyFeedback(null);
+            setMyFeedbackId(null);
         } else {
             check_feedbackAvailability();
         }
@@ -46,7 +53,8 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthStateContext.Provider value={{
             userData, userId, setUser,
-            availableFeedback, check_feedbackAvailability
+            myFeedback, setMyFeedback,
+            myFeedbackId, setMyFeedbackId
         }}>
             {children}
         </AuthStateContext.Provider>

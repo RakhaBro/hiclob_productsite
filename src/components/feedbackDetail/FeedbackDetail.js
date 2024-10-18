@@ -1,38 +1,22 @@
 import { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase.js';
 import { format } from 'date-fns';
 import './feedbackDetail.css';
 
-function FeedbackDetail({ uid, stars, content, likes, lastSubmitted }) {
+function FeedbackDetail({ feedbackSender, stars, content, likes, lastSubmitted }) {
 
-    const [ feedbackSender, setFeedbackSender ] = useState(null);
-    const [isLoaded, setIsloaded] = useState(false);
-    const [ formattedLastSubmitted, setFormattedLastSubmitted ] = useState("");
+    const [formattedLastSubmitted, setFormattedLastSubmitted] = useState("");
 
-    const setup_feedbackData = async () => {
-        try {
-            const userRef = doc(db, "users", uid);
-            const user_snapshot = await getDoc(userRef);
-            if (user_snapshot.exists) {
-                const user_data = user_snapshot.data();
-                setFeedbackSender(user_data);
-                console.log("Feedback sender = " + JSON.stringify(feedbackSender));
-            }
-            if (!isNaN(lastSubmitted)) {
-                const lastSubmitted_date = new Date(lastSubmitted * 1000);
-                const formattedDate = format(lastSubmitted_date, "MMMM do yyyy");
-                setFormattedLastSubmitted(formattedDate);
-            }
-            setIsloaded(true);
-        } catch (error) {
-            console.log(error);
+    const setup_feedbackTime = async () => {
+        if (!isNaN(lastSubmitted)) {
+            const lastSubmitted_date = new Date(lastSubmitted * 1000);
+            const formattedDate = format(lastSubmitted_date, "MMMM do yyyy");
+            setFormattedLastSubmitted(formattedDate);
         }
     }
-    
+
     useEffect(() => {
-        setup_feedbackData();
+        setup_feedbackTime();
     }, []);
 
 
@@ -73,19 +57,11 @@ function FeedbackDetail({ uid, stars, content, likes, lastSubmitted }) {
                 </div>
             </div>
             {
-                isLoaded !== true
-                    ? <div className='content'>
-                        <div className='upper'></div>
-                        <div className='middle'>
-                            <p>Loading...</p>
-                        </div>
-                        <div className='under'></div>
-                    </div>
-                    : <div className='content'>
+                <div className='content'>
 
-                        <div className='upper'>
-                            {
-                                feedbackSender['photo_url'] !== null
+                    <div className='upper'>
+                        {
+                            feedbackSender['photo_url'] !== null
                                 ? <img
                                     className='box_shadow_dark'
                                     src={feedbackSender['photo_url']}
@@ -96,43 +72,43 @@ function FeedbackDetail({ uid, stars, content, likes, lastSubmitted }) {
                                     src={process.env.PUBLIC_URL + "assets/svg/person.svg"}
                                     alt=''
                                 />
-                            }
+                        }
+                        <div>
                             <div>
-                                <div>
-                                    <p className='username'>@{feedbackSender['username']}</p>
-                                    <p className='gradient_text_2 displayname'>{feedbackSender['display_name']}</p>
-                                </div>
-                                <p className='date_joined lowcolor_text_1'>
-                                    {
-                                        formattedLastSubmitted !== ""
-                                            ? "Last submitted " + formattedLastSubmitted
-                                            : null
-                                    }
-                                </p>
+                                <p className='username'>@{feedbackSender['username']}</p>
+                                <p className='gradient_text_2 displayname'>{feedbackSender['display_name']}</p>
                             </div>
-                        </div>
-
-                        <div className='middle'>
-                            <div className='stars_container'>
-                                {stars_element}
-                                <p className='gradient_text_2'>{stars}/5</p>
-                            </div>
-                            <div className='like_container gradient_text_2' onClick={setLike}>
-                                {likes}
-                                <img
-                                    src={
-                                        process.env.PUBLIC_URL +
-                                        (isLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
-                                    }
-                                    alt=''
-                                />
-                            </div>
-                        </div>
-
-                        <div className='under'>
-                            <p>{content}</p>
+                            <p className='date_joined lowcolor_text_1'>
+                                {
+                                    formattedLastSubmitted !== ""
+                                        ? "Last submitted " + formattedLastSubmitted
+                                        : null
+                                }
+                            </p>
                         </div>
                     </div>
+
+                    <div className='middle'>
+                        <div className='stars_container'>
+                            {stars_element}
+                            <p className='gradient_text_2'>{stars}/5</p>
+                        </div>
+                        <div className='like_container gradient_text_2' onClick={setLike}>
+                            {likes}
+                            <img
+                                src={
+                                    process.env.PUBLIC_URL +
+                                    (isLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
+                                }
+                                alt=''
+                            />
+                        </div>
+                    </div>
+
+                    <div className='under'>
+                        <p>{content}</p>
+                    </div>
+                </div>
             }
         </div>
     );
