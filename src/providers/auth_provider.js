@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
     const [ myFeedbackId, setMyFeedbackId ] = useState(null);
 
     const check_feedbackAvailability = async () => {
-        console.log("User is logged in. Checking if it has given feedback before...");
         if (userId !== null) {
+            console.log("User is logged in. Checking if it has given feedback before...");
             const myFeedback_queried = await getDocs(query(
                 collection(db, 'feedbacks'),
                 where('uid', '==', userId),

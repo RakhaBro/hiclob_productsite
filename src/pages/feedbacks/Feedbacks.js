@@ -7,7 +7,7 @@ import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackForm from '../../forms/feedbackForm/FeedbackForm.js';
 import { useNavigate } from 'react-router-dom';
 import { AuthStateContext } from '../../providers/auth_provider.js';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, getCountFromServer, getAggregateFromServer, average } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 
 function FeedbacksPage() {
@@ -15,7 +15,7 @@ function FeedbacksPage() {
     const navigate = useNavigate();
     const { userId, myFeedback } = useContext(AuthStateContext);
     const [isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded] = useState(false);
-
+    
     const [feedbacks, setFeedbacks] = useState([]);
     const [isFeedbacksLoaded, setIsFeedbacksLoaded] = useState(false);
     const fetch_feedbacks = async () => {
@@ -35,8 +35,34 @@ function FeedbacksPage() {
         console.log("List of feedbacks fetched");
     }
 
+
+    const [ feedbacksAggregateData, setFeedbacksAggregateData] = useState({
+        count: null,
+        avg: null
+    });
+
+    const setupFeedbackAggregateData = async () => {
+        const feedbacks_collection = collection(db, "feedbacks");
+        const feedbacksCount_snapshot = await getCountFromServer(feedbacks_collection);
+        const feedbacksCount = feedbacksCount_snapshot.data().count;
+        const starsAvg_snapshot = await getAggregateFromServer(
+            feedbacks_collection,
+            {starsAvg: average('star')}
+        );
+        const starsAvg = starsAvg_snapshot.data().starsAvg;
+        console.log("Feedback aggregate data:\n\tcount: " + feedbacksCount + "\n\tavg: " + starsAvg);
+        if (feedbacksCount !== null && starsAvg !== null) {
+            setFeedbacksAggregateData({
+                count: feedbacksCount,
+                avg: starsAvg
+            });
+        }
+    }
+
+    
     const initstate = async () => {
-        await fetch_feedbacks();
+        fetch_feedbacks();
+        setupFeedbackAggregateData();
         setIsAvailableFeedbackLoaded(true);
     }
 
@@ -86,14 +112,14 @@ function FeedbacksPage() {
                                         <td><p className='gradient_text_2'>Rating</p></td>
                                         <td>
                                             <p>
-                                                : 4.5 / 5
+                                                : {feedbacksAggregateData.avg ?? "..."} / 5
                                                 <img src={process.env.PUBLIC_URL + 'assets/svg/star_active.svg'} alt='' />
                                             </p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><p className='gradient_text_2'>Total Feedbacks</p></td>
-                                        <td><p>: 1872</p></td>
+                                        <td><p>: {feedbacksAggregateData.count ?? "..."}</p></td>
                                     </tr>
                                     <tr>
                                         <td><p className='gradient_text_2'>Newest Version</p></td>

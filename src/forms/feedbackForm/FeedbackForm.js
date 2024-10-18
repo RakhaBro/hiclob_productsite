@@ -29,7 +29,7 @@ function FeedbackForm({ downloadFunc }) {
 
     useEffect(() => {
         get_myFeedback();
-    }, [userData]);
+    }, [myFeedback]);
 
     for (let i = 1; i <= 5; i++) {
         var star_img_src = starPicked !== null && i <= starPicked
