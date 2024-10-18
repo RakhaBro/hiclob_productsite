@@ -62,6 +62,12 @@ function HomePage() {
                 </div>
             </div>
 
+            <div className='content'>
+                <video controls autoPlay >
+                    <source src={process.env.PUBLIC_URL + "assets/video/hiclob_introduction.mp4"} />
+                </video>
+            </div>
+
             <div className="content reverse">
                 <div className="content_visualization_container">
                     <div className="content_visualization box_shadow_dark"></div>

@@ -122,6 +122,12 @@
     object-fit: cover;
 }
 
+#home .content video {
+    max-width: 90%;
+    max-height: calc(90vh - (36px * 2));
+    border-radius: 18px;
+}
+
 
 
 

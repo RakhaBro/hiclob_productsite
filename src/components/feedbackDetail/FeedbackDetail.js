@@ -3,7 +3,7 @@ import { PopupStateContext } from '../../providers/popup_provider';
 import { format } from 'date-fns';
 import './feedbackDetail.css';
 
-function FeedbackDetail({ feedbackSender, stars, content, likes, lastSubmitted }) {
+function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, lastSubmitted }) {
 
     const [formattedLastSubmitted, setFormattedLastSubmitted] = useState("");
 

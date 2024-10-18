@@ -9,7 +9,7 @@ import './feedbackItem.css';
 
 
 
-function FeedbackItem({ uid, stars, content, likes, lastSubmitted, isMine }) {
+function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, isMine }) {
 
     const { setPopupState } = useContext(PopupStateContext);
     const [ feedbackSender, setFeedbackSender ] = useState(null);
@@ -17,6 +17,7 @@ function FeedbackItem({ uid, stars, content, likes, lastSubmitted, isMine }) {
     const navigate = useNavigate();
 
     const feedbackDetetail_ui = <FeedbackDetail
+        feedback_id={feedback_id}
         feedbackSender={feedbackSender}
         stars={stars}
         content={content}

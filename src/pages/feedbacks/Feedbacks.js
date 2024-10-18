@@ -23,7 +23,7 @@ function FeedbacksPage() {
         const feedbacks_snapshot = await getDocs(query(
             collection(db, 'feedbacks'),
             where('uid', '!=', userId)
-        ))
+        ));
         const feedback_list = feedbacks_snapshot.docs.map(
             doc => ({
                 id: doc.id,
@@ -192,6 +192,7 @@ function FeedbacksPage() {
                                 ...feedbacks.map((feedback) => (
                                     <FeedbackItem
                                         key={feedback.id}
+                                        feedback_id={feedback.id}
                                         uid={feedback.data['uid']}
                                         stars={feedback.data['star']}
                                         content={feedback.data['feedback']}
