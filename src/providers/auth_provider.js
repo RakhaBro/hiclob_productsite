@@ -6,6 +6,7 @@ export const AuthStateContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [userId, setUserId] = useState(localStorage.getItem('userId'));
     const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('user')));
 
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     // SET LIKED FEEDBACKS
-    const [likedFeedbacks, setLikedFeedbacks] = useState(localStorage.getItem('likedFeedbacks') ?? []);
+    const [likedFeedbacks, setLikedFeedbacks] = useState(localStorage.getItem('likedFeedbacks') ?? [""]);
     useEffect(() => {
         localStorage.setItem('likedFeedbacks', likedFeedbacks);
         console.log("Liked feedbacks: " + localStorage.getItem('likedFeedbacks'));
@@ -56,7 +57,11 @@ export const AuthProvider = ({ children }) => {
         }
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('userId', userId);
-        setLikedFeedbacks([]);
+        if (isFirstLoad === true) {
+            setIsFirstLoad(false);
+        } else {
+            setLikedFeedbacks([]);
+        }
     }, [userData, userId]);
 
     return (

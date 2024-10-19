@@ -1,13 +1,14 @@
-import { useContext, useEffect } from 'react';
+import './home.css';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Nav from '../../components/nav/nav.js';
 import Footer from '../../components/footer/Footer.js';
 import DownloadConfirmation from '../../components/downloadConfirmation/DownloadConfirmation.js';
-import './home.css';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
 
+    const [isVideoMuted, setIsVideoMuted] = useState(true);
     const { setPopupState } = useContext(PopupStateContext);
     const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ function HomePage() {
     const download_ios = () => {
         showPopup(<DownloadConfirmation os={"IOS"} navigateFunc={() => navigate("/download")} />);
     };
+
 
     useEffect(() => {
         document.getElementById("header").style.filter = "brightness(0)";
@@ -40,7 +42,7 @@ function HomePage() {
             <div id="header">
                 <div id="header-left">
                     <div>
-                        <h1 className="gradient_text_2 mandala">Hiclob</h1>
+                        <h1 className="mandala gradient_text_2">Hiclob</h1>
                         <p className="gradient_text_2">Seek & say hello to strangers you are interested in!</p>
                     </div>
                     <div id="header-left-bottom">
@@ -57,15 +59,22 @@ function HomePage() {
                         </button>
                     </div>
                 </div>
-                <div id="header-right">
-                    <img src={process.env.PUBLIC_URL + '/assets/img/hiclob_1.webp'} alt=''/>
+                <video
+                    src={process.env.PUBLIC_URL + "assets/video/hiclob_introduction.mp4"}
+                    autoPlay
+                    loop
+                    playsInline
+                    muted={isVideoMuted}
+                />
+                <div className='header-video-fade'>
+                    <button onClick={() => setIsVideoMuted(!isVideoMuted)}>
+                        {
+                            isVideoMuted === true
+                            ? <img src={process.env.PUBLIC_URL + "assets/svg/sound_inactive.svg"} />
+                            : <img src={process.env.PUBLIC_URL + "assets/svg/sound_active.svg"} />
+                        }
+                    </button>
                 </div>
-            </div>
-
-            <div className='content'>
-                <video controls autoPlay >
-                    <source src={process.env.PUBLIC_URL + "assets/video/hiclob_introduction.mp4"} />
-                </video>
             </div>
 
             <div className="content reverse">

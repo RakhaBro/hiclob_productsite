@@ -88,7 +88,7 @@
     background-color: rgb(255, 255, 255);
 }
 
-#nav button:hover>p {
+#nav button:hover > p {
     filter: invert();
 }
 

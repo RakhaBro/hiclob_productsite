@@ -3,14 +3,21 @@
 :root {
     --primaryGradient: linear-gradient(
         60deg,
-        /* rgb(214, 18, 253),
+        rgb(214, 18, 253),
         rgb(27, 18, 143),
-        rgb(1, 25, 32) */
-        rgb(12, 17, 44),
+        rgb(1, 25, 32)
+        /* rgb(12, 17, 44),
         rgb(20, 20, 136),
         rgb(50, 89, 245),
         rgb(29, 106, 221),
-        rgb(255, 89, 247)
+        rgb(255, 89, 247) */
+    );
+    --primaryGradientFade: linear-gradient(
+        60deg,
+        rgba(27, 18, 143, .9),
+        rgba(27, 18, 143, .45) 35%,
+        rgba(27, 18, 143, .08) 70%,
+        rgba(1, 25, 32, 0)
     );
     --secondaryGradient: linear-gradient(
         -60deg, 
