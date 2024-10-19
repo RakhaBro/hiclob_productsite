@@ -38,6 +38,14 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    // SET LIKED FEEDBACKS
+    const [likedFeedbacks, setLikedFeedbacks] = useState(localStorage.getItem('likedFeedbacks') ?? []);
+    useEffect(() => {
+        localStorage.setItem('likedFeedbacks', likedFeedbacks);
+        console.log("Liked feedbacks: " + localStorage.getItem('likedFeedbacks'));
+    }, [likedFeedbacks]);
+    // ===================
+
     useEffect(() => {
         console.log("Checking if user is logged in.");
         if (userData == null && userId == null) {
@@ -48,13 +56,15 @@ export const AuthProvider = ({ children }) => {
         }
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('userId', userId);
+        setLikedFeedbacks([]);
     }, [userData, userId]);
 
     return (
         <AuthStateContext.Provider value={{
             userData, userId, setUser,
             myFeedback, setMyFeedback,
-            myFeedbackId, setMyFeedbackId
+            myFeedbackId, setMyFeedbackId,
+            likedFeedbacks, setLikedFeedbacks
         }}>
             {children}
         </AuthStateContext.Provider>

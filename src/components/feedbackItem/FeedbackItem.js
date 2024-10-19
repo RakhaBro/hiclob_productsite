@@ -1,26 +1,55 @@
 import { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackDetail from '../feedbackDetail/FeedbackDetail.js';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 import FeedbackForm from '../../forms/feedbackForm/FeedbackForm.js';
 import { useNavigate } from 'react-router-dom';
 import './feedbackItem.css';
+import { AuthStateContext } from '../../providers/auth_provider.js';
 
 
 
 function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, isMine }) {
 
     const { setPopupState } = useContext(PopupStateContext);
+    const { likedFeedbacks, setLikedFeedbacks } = useContext(AuthStateContext);
+    const [isLiked, setIsLiked] = useState(likedFeedbacks.includes(feedback_id));
     const [ feedbackSender, setFeedbackSender ] = useState(null);
     const [ isLoaded, setIsloaded ] = useState(false);
     const [ updatedLikes, setUpdatedLikes ] = useState(likes);
-    const [ isLiked, setIsLiked ] = useState(false);
     const navigate = useNavigate();
 
-    function setLike() {
-        setIsLiked(!isLiked);
-        setUpdatedLikes(isLiked === true ? updatedLikes - 1 : updatedLikes + 1);
+    useEffect(() => {
+        setIsLiked(likedFeedbacks.includes(feedback_id));
+    }, [likedFeedbacks]);
+
+    const [ isLikeWorking, setIsLikeWorking ] = useState(false);
+    const setLike = async () => {
+        if (isLikeWorking !== true) {
+            setIsLikeWorking(true);
+            if (isLiked == true) {
+                setUpdatedLikes(updatedLikes - 1);
+                setIsLiked(!isLiked);
+                await updateDoc(doc(db, "feedbacks", feedback_id), {
+                    'likes': increment(-1)
+                });
+                
+                // Remove liked feedbacks in local storage
+                setLikedFeedbacks(likedFeedbacks.filter(id => id !== feedback_id));
+                
+            } else {
+                setUpdatedLikes(updatedLikes + 1);
+                setIsLiked(!isLiked);
+                await updateDoc(doc(db, "feedbacks", feedback_id), {
+                    'likes': increment(1)
+                });
+
+                // Push liked feedbacks in local storage
+                setLikedFeedbacks([...likedFeedbacks, feedback_id]);
+            }
+            setIsLikeWorking(false);
+        }
     }
 
     const feedbackDetetail_ui = <FeedbackDetail
@@ -30,8 +59,6 @@ function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, 
         content={content}
         likes={updatedLikes}
         lastSubmitted={lastSubmitted}
-        isLiked={isLiked}
-        likeFunc_callback={setLike}
     />;
 
     const get_feedbackSender = async () => {

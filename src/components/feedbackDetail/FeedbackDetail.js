@@ -2,12 +2,17 @@ import { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider';
 import { format } from 'date-fns';
 import './feedbackDetail.css';
+import { doc, increment, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { AuthStateContext } from '../../providers/auth_provider';
 
-function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, lastSubmitted, isLiked, likeFunc_callback }) {
+function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, lastSubmitted }) {
+
+    const { likedFeedbacks, setLikedFeedbacks } = useContext(AuthStateContext);
+    const [isLiked, setIsLiked] = useState(likedFeedbacks.includes(feedback_id));
 
     const [formattedLastSubmitted, setFormattedLastSubmitted] = useState("");
     const [updatedLikes, setUpdatedLikes] = useState(likes);
-    const [updatedIsLiked, setUpdatedIsLiked] = useState(isLiked);
 
     const setup_feedbackTime = async () => {
         if (!isNaN(lastSubmitted)) {
@@ -40,11 +45,32 @@ function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, la
         }
     }
 
+    const [ isLikeWorking, setIsLikeWorking ] = useState(false);
+    const setLike = async () => {
+        if (isLikeWorking !== true) {
+            setIsLikeWorking(true);
+            if (isLiked === true) {
+                setUpdatedLikes(updatedLikes - 1);
+                setIsLiked(!isLiked);
+                await updateDoc(doc(db, "feedbacks", feedback_id), {
+                    'likes': increment(-1)
+                });
 
-    function setLike() {
-        setUpdatedIsLiked(!updatedIsLiked);
-        setUpdatedLikes(updatedIsLiked === true ? updatedLikes - 1 : updatedLikes + 1);
-        likeFunc_callback();
+                // Remove liked feedbacks in local storage
+                setLikedFeedbacks(likedFeedbacks.filter(id => id !== feedback_id));
+            
+            } else {
+                setUpdatedLikes(updatedLikes + 1);
+                setIsLiked(!isLiked);
+                await updateDoc(doc(db, "feedbacks", feedback_id), {
+                    'likes': increment(1)
+                });
+
+                // Push liked feedbacks in local storage
+                setLikedFeedbacks([...likedFeedbacks, feedback_id]);
+            }
+            setIsLikeWorking(false);
+        }
     }
 
     return (
@@ -97,7 +123,7 @@ function FeedbackDetail({ feedback_id, feedbackSender, stars, content, likes, la
                             <img
                                 src={
                                     process.env.PUBLIC_URL +
-                                    (updatedIsLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
+                                    (isLiked === true ? "assets/svg/heart_active.svg" : "assets/svg/heart_inactive.svg")
                                 }
                                 alt=''
                             />
