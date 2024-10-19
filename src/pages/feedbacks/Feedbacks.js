@@ -13,7 +13,7 @@ import { db } from '../../firebase.js';
 function FeedbacksPage() {
 
     const navigate = useNavigate();
-    const { userId, myFeedback } = useContext(AuthStateContext);
+    const { userId, myFeedback, myFeedbackId } = useContext(AuthStateContext);
     const [isAvailableFeedbackLoaded, setIsAvailableFeedbackLoaded] = useState(false);
     
     const [feedbacks, setFeedbacks] = useState([]);
@@ -134,10 +134,11 @@ function FeedbacksPage() {
                         isAvailableFeedbackLoaded === true && (feedbacks.length < 1 || feedbacks.length >= 3)
                             ? myFeedback !== null
                                 ? <FeedbackItem
+                                    feedback_id={myFeedbackId}
                                     uid={userId}
                                     stars={myFeedback['star']}
                                     content={myFeedback['feedback']}
-                                    likes={myFeedback['likes_num'] ?? 0}
+                                    likes={myFeedback['likes'] ?? 0}
                                     lastSubmitted={
                                         myFeedback !== null
                                             ? myFeedback['time_submitted'].seconds
@@ -169,10 +170,11 @@ function FeedbacksPage() {
                                 isAvailableFeedbackLoaded === true && (feedbacks.length > 0 && feedbacks.length < 3)
                                     ? myFeedback !== null
                                         ? <FeedbackItem
+                                            feedback_id={myFeedbackId}
                                             uid={userId}
                                             stars={myFeedback['star']}
                                             content={myFeedback['feedback']}
-                                            likes={myFeedback['likes_num'] ?? 0}
+                                            likes={myFeedback['likes'] ?? 0}
                                             lastSubmitted={
                                                 myFeedback !== null
                                                     ? myFeedback['time_submitted'].seconds
