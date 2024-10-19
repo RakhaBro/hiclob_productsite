@@ -23,12 +23,14 @@ function HomePage() {
     const download_ios = () => {
         showPopup(<DownloadConfirmation os={"IOS"} navigateFunc={() => navigate("/download")} />);
     };
-
-
+    
     useEffect(() => {
         document.getElementById("header").style.filter = "brightness(0)";
         document.getElementById("header").style.transition = "1s";
         document.getElementById("header").style.filter = "brightness(1)";
+        document.getElementById("backdrop-video").style.opacity = "0";
+        document.getElementById("backdrop-video").style.transition = "3s";
+        document.getElementById("backdrop-video").style.opacity = "1";
         window.scrollTo({
             top: 0,
             behavior: 'smooth',
@@ -60,6 +62,7 @@ function HomePage() {
                     </div>
                 </div>
                 <video
+                    id='backdrop-video'
                     src={process.env.PUBLIC_URL + "assets/video/hiclob_introduction.mp4"}
                     autoPlay
                     loop

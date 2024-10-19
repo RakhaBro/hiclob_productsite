@@ -6,7 +6,8 @@
     filter: brightness(0);
 }
 
-#home #header video {
+#home #backdrop-video {
+    opacity: 1;
     z-index: 5;
     position: absolute;
     width: 100%; height: 100svh;
