@@ -1,5 +1,5 @@
 import './home.css';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Nav from '../../components/nav/nav.js';
 import Footer from '../../components/footer/Footer.js';
 import DownloadConfirmation from '../../components/downloadConfirmation/DownloadConfirmation.js';
@@ -73,8 +73,8 @@ function HomePage() {
                     <button onClick={() => setIsVideoMuted(!isVideoMuted)}>
                         {
                             isVideoMuted === true
-                            ? <img src={process.env.PUBLIC_URL + "assets/svg/sound_inactive.svg"} />
-                            : <img src={process.env.PUBLIC_URL + "assets/svg/sound_active.svg"} />
+                            ? <img src={process.env.PUBLIC_URL + "assets/svg/sound_inactive.svg"} alt='' />
+                            : <img src={process.env.PUBLIC_URL + "assets/svg/sound_active.svg"} alt='' />
                         }
                     </button>
                 </div>

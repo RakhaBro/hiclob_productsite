@@ -28,7 +28,7 @@ function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, 
     const setLike = async () => {
         if (isLikeWorking !== true) {
             setIsLikeWorking(true);
-            if (isLiked == true) {
+            if (isLiked === true) {
                 setUpdatedLikes(updatedLikes - 1);
                 setIsLiked(!isLiked);
                 await updateDoc(doc(db, "feedbacks", feedback_id), {
