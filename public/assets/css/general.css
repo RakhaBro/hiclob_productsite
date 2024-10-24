@@ -15,8 +15,8 @@
     --primaryGradientFade: linear-gradient(
         60deg,
         rgba(27, 18, 143, .9),
-        rgba(27, 18, 143, .45) 35%,
-        rgba(27, 18, 143, .08) 70%,
+        rgba(26, 18, 143, 0.5) 35%,
+        rgba(26, 18, 143, 0.137) 70%,
         rgba(1, 25, 32, 0)
     );
     --secondaryGradient: linear-gradient(

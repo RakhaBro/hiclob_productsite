@@ -83,16 +83,14 @@ function HomePage() {
             <div className="content reverse">
                 <div className="content_visualization_container">
                     <div className="content_visualization box_shadow_dark"></div>
-                    <img src={process.env.PUBLIC_URL + '/assets/img/hiclob_1.webp'} alt=''/>
+                    <img src={process.env.PUBLIC_URL + '/assets/img/home_1.webp'} alt=''/>
                 </div>
                 <div className="content_explanation">
                     <h1 className="gradient_text_1">Why Hiclob?</h1>
                     <p className="gradient_text_2">
-                        We provide the ability to manage what kind of person
-                        you would like to look for to talk with.
+                        You can manage what kind of strangers you want to connect with, based on your interest.
                         <br /><br />
-                        You can continue talking with someone you found just by following
-                        their account.
+                        Continue your conversation easily by chatting them privately!
                     </p>
                 </div>
             </div>
@@ -105,10 +103,9 @@ function HomePage() {
                 <div className="content_explanation">
                     <h1 className="gradient_text_1">Is The Privacy Safe?</h1>
                     <p className="gradient_text_2">
-                        Yes, we guarantee your privacy safety and your comportability
-                        in Hiclob ecosystem.
+                        At Hiclob, we prioritize your privacy and comfort.
                         <br /><br />
-                        You can report anything that makes you uncomfortable when you are on Hiclob.
+                        Whenever you encounter anything that makes you uncomfortable, you can easily report it to us.
                     </p>
                 </div>
             </div>
