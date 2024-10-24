@@ -98,7 +98,7 @@ function HomePage() {
             <div className="content">
                 <div className="content_visualization_container">
                     <div className="content_visualization box_shadow_dark"></div>
-                    <img src={process.env.PUBLIC_URL + '/assets/img/hiclob_1.webp'} alt=''/>
+                    <img src={process.env.PUBLIC_URL + '/assets/img/home_2.webp'} alt=''/>
                 </div>
                 <div className="content_explanation">
                     <h1 className="gradient_text_1">Is The Privacy Safe?</h1>
