@@ -86,11 +86,14 @@ function HomePage() {
                     <img src={process.env.PUBLIC_URL + '/assets/img/home_1.webp'} alt=''/>
                 </div>
                 <div className="content_explanation">
-                    <h1 className="gradient_text_1">Why Hiclob?</h1>
+                    <h1 className="gradient_text_1">Why Choose Hiclob?</h1>
+                    <br />
                     <p className="gradient_text_2">
-                        You can manage what kind of strangers you want to connect with, based on your interest.
+                        Hiclob empowers you to connect with like-minded individuals
+                        by matching you with strangers who share your interests.
                         <br /><br />
-                        Continue your conversation easily by chatting them privately!
+                        Effortlessly take the conversation further
+                        by chatting with them privately.
                     </p>
                 </div>
             </div>
@@ -101,11 +104,13 @@ function HomePage() {
                     <img src={process.env.PUBLIC_URL + '/assets/img/home_2.webp'} alt=''/>
                 </div>
                 <div className="content_explanation">
-                    <h1 className="gradient_text_1">Is The Privacy Safe?</h1>
+                    <h1 className="gradient_text_1">Your Privacy, Our Priority</h1>
+                    <br />
                     <p className="gradient_text_2">
-                        At Hiclob, we prioritize your privacy and comfort.
-                        <br /><br />
-                        Whenever you encounter anything that makes you uncomfortable, you can easily report it to us.
+                    At Hiclob, your privacy and comfort come first.
+                    <br /><br />
+                    If you ever face anything uncomfortable, our easy-to-use reporting system
+                    ensures a safe and supportive community for everyone.
                     </p>
                 </div>
             </div>
