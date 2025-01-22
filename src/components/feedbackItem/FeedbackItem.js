@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackDetail from '../feedbackDetail/FeedbackDetail.js';
 import { doc, getDoc, increment, updateDoc } from 'firebase/firestore';
@@ -10,7 +10,7 @@ import { AuthStateContext } from '../../providers/auth_provider.js';
 
 
 
-function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, isMine }) {
+const FeedbackItem = React.memo(({ feedback_id, uid, stars, content, likes, lastSubmitted, isMine }) => {
 
     const { setPopupState } = useContext(PopupStateContext);
     const { likedFeedbacks, setLikedFeedbacks } = useContext(AuthStateContext);
@@ -180,6 +180,6 @@ function FeedbackItem({ feedback_id, uid, stars, content, likes, lastSubmitted, 
             }
         </div>
     );
-}
+});
 
 export default FeedbackItem;

@@ -2,7 +2,7 @@ import './feedbacks.css';
 import Footer from '../../components/footer/Footer';
 import Nav from '../../components/nav/nav';
 import FeedbackItem from '../../components/feedbackItem/FeedbackItem.js';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import FeedbackForm from '../../forms/feedbackForm/FeedbackForm.js';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { AuthStateContext } from '../../providers/auth_provider.js';
 import { collection, getDocs, query, where, getCountFromServer, getAggregateFromServer, average } from 'firebase/firestore';
 import { db } from '../../firebase.js';
 
-function FeedbacksPage() {
+const FeedbacksPage = React.memo(() => {
 
     const navigate = useNavigate();
     const { userId, myFeedback, myFeedbackId } = useContext(AuthStateContext);
@@ -112,7 +112,10 @@ function FeedbacksPage() {
                                         <td><p className='gradient_text_2'>Rating</p></td>
                                         <td>
                                             <p>
-                                                : {feedbacksAggregateData.avg ?? "..."} / 5
+                                                : {feedbacksAggregateData.avg != null
+                                                    ? feedbacksAggregateData.avg.toFixed(2)
+                                                    : "..."
+                                                } / 5
                                                 <img src={process.env.PUBLIC_URL + 'assets/svg/star_active.svg'} alt='' />
                                             </p>
                                         </td>
@@ -210,6 +213,6 @@ function FeedbacksPage() {
             <Footer />
         </div>
     );
-}
+});
 
 export default FeedbacksPage;

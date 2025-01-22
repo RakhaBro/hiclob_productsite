@@ -6,6 +6,7 @@ import FeedbacksPage from './pages/feedbacks/Feedbacks.js';
 import DownloadPage from './pages/download/Download.js';
 import FullscreenPopup from './components/popup/FullscreenPopup.js';
 import { PopupStateContext } from './providers/popup_provider.js';
+import Nav from './components/nav/nav.js';
 
 function App() {
 

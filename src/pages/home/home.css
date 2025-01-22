@@ -47,11 +47,11 @@
 }
 
 #home #header-left h1 {
-    font-size: 120px;
+    font-size: 100px;
 }
 
 #home #header-left p {
-    font-size: 20px;
+    font-size: 24px;
 }
 
 #home #header-left-bottom {
@@ -73,6 +73,7 @@
 
 #home #header-left-bottom > button > p {
     margin-left: calc(24px + 16px);
+    font-size: 18px;
 }
 
 #home #header-left-bottom button:hover {

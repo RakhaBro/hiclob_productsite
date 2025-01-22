@@ -1,10 +1,10 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { PopupStateContext } from '../../providers/popup_provider.js';
 import DownloadConfirmation from '../downloadConfirmation/DownloadConfirmation.js';
 import './releaseItem.css';
 import { useNavigate } from 'react-router-dom';
 
-function ReleaseItem({releaseName, isNew, isStable, releaseYear, releaseDate, downloads}) {
+const ReleaseItem = React.memo(({releaseName, isNew, isStable, releaseYear, releaseDate, downloads}) => {
 
     const { setPopupState } = useContext(PopupStateContext);
 
@@ -65,6 +65,6 @@ function ReleaseItem({releaseName, isNew, isStable, releaseYear, releaseDate, do
             </div>
         </div>
     );
-}
+});
 
 export default ReleaseItem;

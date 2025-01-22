@@ -1,11 +1,11 @@
 import './nav.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { AuthStateContext } from '../../providers/auth_provider';
 import { PopupStateContext } from '../../providers/popup_provider';
 import Profile from '../profile/Profile';
 
-function Nav() {
+const Nav = React.memo(() => {
 
     const { userData } = useContext(AuthStateContext);
     const { setPopupState } = useContext(PopupStateContext);
@@ -90,6 +90,6 @@ function Nav() {
             <div id="nav-background"></div>
         </div>
     );
-}
+});
 
 export default Nav;

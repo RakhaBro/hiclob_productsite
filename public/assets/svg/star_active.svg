@@ -2,11 +2,11 @@
   
   <defs>
     <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <!-- <stop offset="10%" style="stop-color:rgb(20,20,136);stop-opacity:1" />
-      <stop offset="40%" style="stop-color:rgb(64,140,253);stop-opacity:1" />
-      <stop offset="80%" style="stop-color:rgb(255,89,247);stop-opacity:1" /> -->
-      <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
-      <stop offset="100%" style="stop-color:rgb(137,163,202);stop-opacity:1" />
+      <!-- <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(137,163,202);stop-opacity:1" /> -->
+      <stop offset="0%" style="stop-color:rgb(214, 180, 28);stop-opacity:1" />
+      <stop offset="50%" style="stop-color:rgb(255, 255, 118);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(214, 180, 28);stop-opacity:1" />
     </linearGradient>
   </defs>
   

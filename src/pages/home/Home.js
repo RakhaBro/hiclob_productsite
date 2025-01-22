@@ -45,7 +45,7 @@ function HomePage() {
                 <div id="header-left">
                     <div>
                         <h1 className="mandala gradient_text_2">Hiclob</h1>
-                        <p className="gradient_text_2">Seek & say hello to strangers you are interested in!</p>
+                        <p className="gradient_text_2">Match your productivity vibe</p>
                     </div>
                     <div id="header-left-bottom">
                         <button onClick={download_android}>
