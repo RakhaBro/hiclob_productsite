@@ -104,7 +104,9 @@ function LoginForm({downloadFunc}) {
                         src={process.env.PUBLIC_URL + 'assets/img/hiclob_horizontal_white.webp'}
                         alt=''
                     />
-                    <p className='gradient_text_2'>A few login step to give Hiclob a feedback!</p>
+                    <br />
+                    <br />
+                    <p className='gradient_text_2'>Login with Hiclob account & give a feedback!</p>
                 </div>
                 <div className='loginform'>
                     <div className='input_wrapper'>
@@ -126,8 +128,10 @@ function LoginForm({downloadFunc}) {
                         <button onClick={login}>
                             {isLoggingIn === true ? "Logging in..." : "Login"}
                         </button>
+                        <br />
                         <p className='gradient_text_2'>
-                            Have no account? Download <span onClick={downloadFunc}>Hiclob</span> to register!
+                            Have no account?
+                            Download <span onClick={downloadFunc}>Hiclob</span> & create the account
                         </p>
                     </div>
                 </div>

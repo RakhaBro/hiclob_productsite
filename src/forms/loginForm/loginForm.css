@@ -117,12 +117,6 @@
     align-items: center; justify-content: center;
 }
 
-#loginForm .content .loginform .loginform_under span {
-    cursor: pointer;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
 
 
 #loginForm #invalid {

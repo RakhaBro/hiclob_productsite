@@ -89,11 +89,11 @@ function HomePage() {
                     <h1 className="gradient_text_1">Why Choose Hiclob?</h1>
                     <br />
                     <p className="gradient_text_2">
-                        Hiclob empowers you to connect with like-minded individuals
+                        Hiclob empowers you to <span>connect</span> with <span>like-minded</span> individuals
                         by matching you with strangers who share your interests.
                         <br /><br />
-                        Effortlessly take the conversation further
-                        by chatting with them privately.
+                        <span>Effortlessly</span> take the <span>conversation</span> further
+                        by chatting with them <span>privately</span>.
                     </p>
                 </div>
             </div>
@@ -107,10 +107,10 @@ function HomePage() {
                     <h1 className="gradient_text_1">Your Privacy, Our Priority</h1>
                     <br />
                     <p className="gradient_text_2">
-                    At Hiclob, your privacy and comfort come first.
+                    At Hiclob, your <span>privacy</span> and <span>comfort</span> come first.
                     <br /><br />
-                    If you ever face anything uncomfortable, our easy-to-use reporting system
-                    ensures a safe and supportive community for everyone.
+                    If you ever face anything uncomfortable, our <span>easy-to-use reporting</span> system
+                    ensures a <span>safe</span> and <span>supportive</span> community for everyone.
                     </p>
                 </div>
             </div>

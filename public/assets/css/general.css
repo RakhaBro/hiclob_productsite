@@ -1,33 +1,41 @@
 :root {
     --primaryGradient: linear-gradient(
         60deg,
-        rgb(214, 18, 253),
+        /* rgb(214, 18, 253),
         rgb(27, 18, 143),
-        rgb(1, 25, 32)
+        rgb(1, 25, 32) */
+
         /* rgb(12, 17, 44),
         rgb(20, 20, 136),
         rgb(50, 89, 245),
         rgb(29, 106, 221),
         rgb(255, 89, 247) */
+
+        #1E0038,
+        #551B89
     );
     --primaryGradientFade: linear-gradient(
         60deg,
-        rgba(27, 18, 143, .9),
+        /* rgba(27, 18, 143, .9),
         rgba(26, 18, 143, 0.5) 35%,
         rgba(26, 18, 143, 0.137) 70%,
-        rgba(1, 25, 32, 0)
+        rgba(1, 25, 32, 0) */
+
+        #3573c5da,
+        #6a27a5a0 35%,
+        #551B8968 70%,
+        #551B8900
     );
     --secondaryGradient: linear-gradient(
         -60deg, 
-        rgb(50, 89, 245),
-        rgb(20, 20, 136),
-        rgb(64, 140, 253),
-        rgb(255, 89, 205)
+        #EDFBFF,
+        #A1ADFF,
+        #AD47C8
     );
     --blackGradient1: linear-gradient(
         to bottom,
-        rgba(10, 10, 12, 1),
-        rgba(10, 10, 12, .6),
+        rgba(10, 10, 12, .9),
+        rgba(10, 10, 12, .4),
         rgba(10, 10, 12, 0)
     );
     --blackGradient2: linear-gradient(
@@ -84,6 +92,15 @@ p {
     margin: 2px; padding: 0;
     font-size: 20px;
     letter-spacing: 2px;
+}
+
+span {
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: unset;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: white;
 }
 
 
